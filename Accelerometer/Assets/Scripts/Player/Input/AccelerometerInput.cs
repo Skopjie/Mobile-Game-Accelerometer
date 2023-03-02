@@ -22,10 +22,9 @@ public class AccelerometerInput : MonoBehaviour
 
     void GetAccelerometer()
     {
-        Vector3 tilt = Input.acceleration;
-
+        Vector3 tilt = Input.acceleration * forceSpeed;
         tilt = Quaternion.Euler(90, 0, 0) * tilt;
 
-        rgbd.AddForce(tilt * forceSpeed);
+        rgbd.AddForce(tilt);
     }
 }

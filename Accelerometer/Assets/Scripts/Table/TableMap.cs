@@ -17,11 +17,15 @@ public class TableMap : MonoBehaviour
 
     Vector3 scalePrefab;
 
+    [SerializeField] GameObject player;
+    [SerializeField] Vector3 playerPos;
+
 
     // Start is called before the first frame update
     void Start()
     {
         InitTable();
+        playerPos = player.transform.position;
 
         //InvokeRepeating("DisableRandomCasilla", 2, 2);
 
@@ -32,13 +36,12 @@ public class TableMap : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
     }
 
     void InitTable()
     {
         casillas = new Casilla[filas, columnas];
-        scalePrefab = casillaPrefab.GetComponent<Transform>().localScale;
+        scalePrefab = casillaPrefab.transform.GetChild(0).GetComponent<Transform>().localScale;
 
         for(int i = 0; i<filas; i++)
         {
@@ -52,7 +55,7 @@ public class TableMap : MonoBehaviour
     void InstantiateCasilla(int fila, int columna)
     {
         Vector3 positionCasilla = new Vector3(transform.position.x + (fila * scalePrefab.x), 0, transform.position.y + (columna * scalePrefab.z));
-        Casilla casilla = Instantiate(casillaPrefab, positionCasilla, Quaternion.identity, transform).GetComponent<Casilla>();
+        Casilla casilla = Instantiate(casillaPrefab, positionCasilla, Quaternion.identity, transform).transform.GetChild(0).GetComponent<Casilla>();
         casilla.id = new Vector2(fila, columna);
         casillas[fila, columna] = casilla;
     }
@@ -99,6 +102,12 @@ public class TableMap : MonoBehaviour
     void AddRebotadorCasilla(Vector2Int idCasilla)
     {
         casillas[idCasilla.x, idCasilla.y].AddRebotadorCasilla();
+    }
+
+    public void ReturnPlayer()
+    {
+        player.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+        player.transform.position = playerPos;
     }
 
 }
