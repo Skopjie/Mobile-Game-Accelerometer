@@ -5,18 +5,22 @@ using UnityEngine;
 public class TableMap : MonoBehaviour
 {
     public Casilla[,] casillas;
+    [SerializeField] List<Casilla> casillasEliminadas;
 
     [Header("Componentes")]
     [SerializeField] GameObject casillaPrefab;
-    [SerializeField] PatronCasillasData patronData;
+
+    [SerializeField] List<PatronCasillasData> patronesData;
 
     [Header("Datos Tablero")]
     [SerializeField] int filas;
     [SerializeField] int columnas;
+    [SerializeField] float timePerRound;
+    [SerializeField] float timeBtwRound;
     [SerializeField] bool isPlaying = false;
 
     Vector3 scalePrefab;
-
+    [Header("Datos Temporales")]
     [SerializeField] GameObject player;
     [SerializeField] Vector3 playerPos;
 
@@ -29,8 +33,8 @@ public class TableMap : MonoBehaviour
 
         //InvokeRepeating("DisableRandomCasilla", 2, 2);
 
-        if(patronData != null && isPlaying == true)
-            BuildPatronMap(patronData);
+        if(patronesData != null && isPlaying == true)
+            StartCoroutine(NextRound(GetRandomPatron()));
     }
 
     // Update is called once per frame
@@ -57,18 +61,39 @@ public class TableMap : MonoBehaviour
         Vector3 positionCasilla = new Vector3(transform.position.x + (fila * scalePrefab.x), 0, transform.position.y + (columna * scalePrefab.z));
         Casilla casilla = Instantiate(casillaPrefab, positionCasilla, Quaternion.identity, transform).transform.GetChild(0).GetComponent<Casilla>();
         casilla.id = new Vector2(fila, columna);
+        casilla.casillaPosition = positionCasilla;
         casillas[fila, columna] = casilla;
     }
 
-    void DisableRandomCasilla()
+
+
+
+
+    IEnumerator NextRound(PatronCasillasData patronData)
     {
-        DisableCasilla(GetRandomCasilla());
+        yield return new WaitForSeconds(timeBtwRound);
+        BuildPatronMap(patronData);
+
+        yield return new WaitForSeconds(timePerRound);
+        ReturnMapNormal();
+        StartCoroutine(NextRound(GetRandomPatron()));
     }
+
+
 
     void BuildPatronMap(PatronCasillasData patron)
     {
         DisablePatronCasillas(patron);
         AddRebotadorPatronCasillas(patron);
+    }
+
+    void ReturnMapNormal()
+    {
+        foreach (Casilla casilla in casillasEliminadas)
+        {
+            casilla.ReturnCasillaInitialPosition();
+        }
+        casillasEliminadas.Clear();
     }
 
     void DisablePatronCasillas(PatronCasillasData patron)
@@ -79,12 +104,35 @@ public class TableMap : MonoBehaviour
         }
     }
 
+    void DisableCasilla(Vector2Int idCasilla)
+    {
+        Casilla casillaSeleccionada = casillas[idCasilla.x, idCasilla.y];
+        casillaSeleccionada.SelectCasillaDisactive();
+        casillasEliminadas.Add(casillaSeleccionada);
+    }
+
+
+
     void AddRebotadorPatronCasillas(PatronCasillasData patron)
     {
         foreach (Vector2Int id in patron.casillasRebotador)
         {
             AddRebotadorCasilla(id);
         }
+    }
+
+    void AddRebotadorCasilla(Vector2Int idCasilla)
+    {
+        casillas[idCasilla.x, idCasilla.y].AddRebotadorCasilla();
+    }
+
+
+
+
+
+    void DisableRandomCasilla()
+    {
+        DisableCasilla(GetRandomCasilla());
     }
 
     Vector2Int GetRandomCasilla()
@@ -94,15 +142,13 @@ public class TableMap : MonoBehaviour
         return new Vector2Int(randomfila, randomColumna);
     }
 
-    void DisableCasilla(Vector2Int idCasilla)
+    PatronCasillasData GetRandomPatron()
     {
-        casillas[idCasilla.x, idCasilla.y].SelectCasillaDisactive();
+        int randomPatron = Random.Range(0, patronesData.Count);
+        return patronesData[randomPatron];
     }
 
-    void AddRebotadorCasilla(Vector2Int idCasilla)
-    {
-        casillas[idCasilla.x, idCasilla.y].AddRebotadorCasilla();
-    }
+
 
     public void ReturnPlayer()
     {

@@ -6,8 +6,10 @@ public class Casilla : MonoBehaviour
 {
     [Header("Datos Importantes")]
     public Vector2 id;
+    public Vector3 casillaPosition;
 
     [Header("Componentes")]
+    [SerializeField] Material materialNormal;
     [SerializeField] Material materialSelected;
     [SerializeField] MeshRenderer meshRender;
     [SerializeField] Rigidbody rgbd;
@@ -46,5 +48,13 @@ public class Casilla : MonoBehaviour
     {
         rgbd.isKinematic = false;
         rgbd.useGravity = true;
+    }
+
+    public void ReturnCasillaInitialPosition()
+    {
+        meshRender.material = materialNormal;
+        rgbd.isKinematic = true;
+        rgbd.useGravity = false;
+        gameObject.transform.position = casillaPosition;
     }
 }

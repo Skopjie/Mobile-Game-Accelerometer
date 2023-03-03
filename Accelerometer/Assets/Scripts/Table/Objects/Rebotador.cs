@@ -29,6 +29,6 @@ public class Rebotador : MonoBehaviour
 
     void AplyForceToObject(Rigidbody objectRgbd)
     {
-        objectRgbd.AddExplosionForce(explosionForce, transform.position, explosionRadioForce);
+        objectRgbd.AddExplosionForce(explosionForce, transform.position, explosionRadioForce, 0, ForceMode.Impulse);
     }
 }

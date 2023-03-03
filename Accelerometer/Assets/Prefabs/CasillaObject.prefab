@@ -112,6 +112,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: {x: 0, y: 0}
+  casillaPosition: {x: 0, y: 0, z: 0}
+  materialNormal: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   materialSelected: {fileID: 2100000, guid: b450e694131d539468a4d8dcfdbb6a93, type: 2}
   meshRender: {fileID: 5174946341142851718}
   rgbd: {fileID: 1641302819337718154}
@@ -130,7 +132,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &6441680545780717637
 GameObject:
@@ -251,6 +253,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3398425018112870317, guid: a8f87c03da1571943856703abfac4358,
+        type: 3}
+      propertyPath: explosionForce
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3398425018112870317, guid: a8f87c03da1571943856703abfac4358,
+        type: 3}
+      propertyPath: explosionRadioForce
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8f87c03da1571943856703abfac4358, type: 3}
