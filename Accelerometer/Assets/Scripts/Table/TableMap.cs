@@ -28,7 +28,7 @@ public class TableMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InitTable();
+        //InitTable();
         playerPos = player.transform.position;
 
         //InvokeRepeating("DisableRandomCasilla", 2, 2);
@@ -42,7 +42,7 @@ public class TableMap : MonoBehaviour
     {
     }
 
-    void InitTable()
+    /*void InitTable()
     {
         casillas = new Casilla[filas, columnas];
         scalePrefab = casillaPrefab.transform.GetChild(0).GetComponent<Transform>().localScale;
@@ -63,7 +63,7 @@ public class TableMap : MonoBehaviour
         casilla.id = new Vector2(fila, columna);
         casilla.casillaPosition = positionCasilla;
         casillas[fila, columna] = casilla;
-    }
+    }*/
 
 
 
