@@ -4,8 +4,21 @@ using UnityEditor;
 
 public class WindowToolPatron : EditorWindow
 {
-    static PatronCasillasData patronCasilla;
 
+    GUISkin mySkin;
+
+    Texture2D backGroundTexture;
+    Texture2D headerSectionTexture;
+
+    Color backGroundSectionColor = new Color(255f / 255f, 255f / 255f, 255f / 255f, 1f);
+    Color headerSectionColor = new Color(255f / 255f, 255f / 255f, 255f / 255f, 1f);
+
+    Rect backGroundSection;
+    Rect headerSection;
+
+
+
+    static PatronCasillasData patronCasilla;
     public static PatronCasillasData patronCasillaInfo { get { return patronCasilla; } }
 
 
@@ -28,7 +41,21 @@ public class WindowToolPatron : EditorWindow
 
     private void OnEnable()
     {
+        InitTextures();
         InitData();
+
+        mySkin = Resources.Load<GUISkin>("GameDesingWindow");
+    }
+
+    void InitTextures()
+    {
+        backGroundTexture = new Texture2D(1, 1);
+        backGroundTexture.SetPixel(0, 0, backGroundSectionColor);
+        backGroundTexture.Apply();
+
+        headerSectionTexture = new Texture2D(1, 1);
+        headerSectionTexture.SetPixel(0, 0, headerSectionColor);
+        headerSectionTexture.Apply();
     }
 
     void InitData()
@@ -43,27 +70,84 @@ public class WindowToolPatron : EditorWindow
 
     private void OnGUI()
     {
+        GUI.skin = mySkin;
         casillasSerializedObject.Update();
 
 
-        for(int y =0;y<5;y++)
+        DrawLayouts();
+        DrawTablePanel();
+        DrawPropertiesSOPanel();
+
+        casillasSerializedObject.ApplyModifiedProperties();
+    }
+
+    void DrawLayouts()
+    {
+        backGroundSection.x = 0;
+        backGroundSection.y = 0;
+        backGroundSection.width = Screen.width/2;
+        backGroundSection.height = Screen.height;
+
+        GUI.DrawTexture(backGroundSection, backGroundTexture);
+
+        ////////////////////
+
+        headerSection.x = Screen.width / 2;
+        headerSection.y = 0;
+        headerSection.width = Screen.width/2;
+        headerSection.height = Screen.height;
+
+        GUI.DrawTexture(headerSection, headerSectionTexture);
+    }
+
+    void DrawTablePanel()
+    {
+        GUIStyle yellowBackgroundStyle = new GUIStyle(GUI.skin.button);
+        yellowBackgroundStyle.normal.background = MakeBackgroundTexture(10, 10, Color.black);
+
+        GUIStyle yellowBackgroundStyle1 = new GUIStyle(GUI.skin.button);
+        yellowBackgroundStyle1.normal.background = MakeBackgroundTexture(10, 10, Color.red);
+
+        GUILayout.BeginArea(backGroundSection);
+        for (int y = 0; y < 5; y++)
         {
             GUILayout.BeginHorizontal();
             for (int i = 0; i < 5; i++)
             {
-                if (GUILayout.Button("", GUILayout.Height(20), GUILayout.Width(20)))
+                if(i>2)
                 {
-                    //InitializeActionData();
-                    patronCasilla.casillasEliminadas.Add(new Vector2Int(y, i));
+                    if (GUILayout.Button("", yellowBackgroundStyle))
+                    {
+                        //InitializeActionData();
+                        Debug.Log(y + " / " + i);
+                        //patronCasilla.casillasEliminadas.Add(new Vector2Int(y, i));
 
-                    casillasSerializedObject.Update();
-                    casillasSerializedObject.ApplyModifiedProperties();
+                        casillasSerializedObject.Update();
+                        casillasSerializedObject.ApplyModifiedProperties();
+                    }
                 }
+                else
+                {
+                    if (GUILayout.Button("", yellowBackgroundStyle1))
+                    {
+                        //InitializeActionData();
+                        Debug.Log(y + " / " + i);
+                        //patronCasilla.casillasEliminadas.Add(new Vector2Int(y, i));
+
+                        casillasSerializedObject.Update();
+                        casillasSerializedObject.ApplyModifiedProperties();
+                    }
+                }
+               
             }
             GUILayout.EndHorizontal();
         }
+        GUILayout.EndArea();
+    }
 
-
+    void DrawPropertiesSOPanel()
+    {
+        GUILayout.BeginArea(headerSection);
 
         EditorGUILayout.PropertyField(namePatronCasillas, new GUIContent("Nombre Patron"), true);
         EditorGUILayout.PropertyField(casillasEliminadas, new GUIContent("Casillas Eliminadas"), true);
@@ -74,7 +158,7 @@ public class WindowToolPatron : EditorWindow
             InitializeActionData();
         }
 
-        casillasSerializedObject.ApplyModifiedProperties();
+        GUILayout.EndArea();
     }
 
     private void InitializeActionData()
@@ -90,5 +174,22 @@ public class WindowToolPatron : EditorWindow
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+    }
+
+    private Texture2D MakeBackgroundTexture(int width, int height, Color color)
+    {
+        Color[] pixels = new Color[width * height];
+
+        for (int i = 0; i < pixels.Length; i++)
+        {
+            pixels[i] = color;
+        }
+
+        Texture2D backgroundTexture = new Texture2D(width, height);
+
+        backgroundTexture.SetPixels(pixels);
+        backgroundTexture.Apply();
+
+        return backgroundTexture;
     }
 }
