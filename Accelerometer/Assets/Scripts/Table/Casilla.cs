@@ -56,5 +56,6 @@ public class Casilla : MonoBehaviour
         rgbd.isKinematic = true;
         rgbd.useGravity = false;
         gameObject.transform.position = casillaPosition;
+        RebotadorGO.SetActive(false);
     }
 }

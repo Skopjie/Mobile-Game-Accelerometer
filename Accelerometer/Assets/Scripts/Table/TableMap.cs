@@ -6,6 +6,7 @@ public class TableMap : MonoBehaviour
 {
     public Casilla[,] casillas;
     [SerializeField] List<Casilla> casillasEliminadas;
+    [SerializeField] List<Casilla> casillasRebotador;
 
     [Header("Componentes")]
     [SerializeField] GameObject casillaPrefab;
@@ -28,7 +29,7 @@ public class TableMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //InitTable();
+        InitTable();
         playerPos = player.transform.position;
 
         //InvokeRepeating("DisableRandomCasilla", 2, 2);
@@ -42,7 +43,7 @@ public class TableMap : MonoBehaviour
     {
     }
 
-    /*void InitTable()
+    void InitTable()
     {
         casillas = new Casilla[filas, columnas];
         scalePrefab = casillaPrefab.transform.GetChild(0).GetComponent<Transform>().localScale;
@@ -63,7 +64,7 @@ public class TableMap : MonoBehaviour
         casilla.id = new Vector2(fila, columna);
         casilla.casillaPosition = positionCasilla;
         casillas[fila, columna] = casilla;
-    }*/
+    }
 
 
 
@@ -93,7 +94,13 @@ public class TableMap : MonoBehaviour
         {
             casilla.ReturnCasillaInitialPosition();
         }
+
+        foreach (Casilla casilla in casillasRebotador)
+        {
+            casilla.ReturnCasillaInitialPosition();
+        }
         casillasEliminadas.Clear();
+        casillasRebotador.Clear();
     }
 
     void DisablePatronCasillas(PatronCasillasData patron)
@@ -124,6 +131,7 @@ public class TableMap : MonoBehaviour
     void AddRebotadorCasilla(Vector2Int idCasilla)
     {
         casillas[idCasilla.x, idCasilla.y].AddRebotadorCasilla();
+        casillasRebotador.Add(casillas[idCasilla.x, idCasilla.y]);
     }
 
 
