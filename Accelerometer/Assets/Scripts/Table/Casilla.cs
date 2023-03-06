@@ -2,46 +2,109 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TypeSquare
+{
+    normal,
+    fall,
+    rebotador
+}
+
 public class Casilla : MonoBehaviour
 {
     [Header("Datos Importantes")]
     public Vector2 id;
     public Vector3 casillaPosition;
+    public float timeToChangeTypeSquare;
+    TypeSquare typeSquare;
+
+    [Header("Materiales")]
+    [SerializeField] Material materialNormal;
+    [SerializeField] Material materialFall;
+    [SerializeField] Material materialRebotador;
 
     [Header("Componentes")]
-    [SerializeField] Material materialNormal;
-    [SerializeField] Material materialSelected;
     [SerializeField] MeshRenderer meshRender;
     [SerializeField] Rigidbody rgbd;
     [SerializeField] GameObject RebotadorGO;
 
     private void Start()
     {
-        meshRender = this.gameObject.GetComponent<MeshRenderer>();
-        rgbd = this.gameObject.GetComponent<Rigidbody>();
+        InitComponents();
     }
 
-    public void SelectCasillaDisactive()
+    void InitComponents()
     {
-        StartCoroutine(CasillaFall());
+        if(meshRender == null)
+            meshRender = this.gameObject.GetComponent<MeshRenderer>();
+
+        if(rgbd == null)
+            rgbd = this.gameObject.GetComponent<Rigidbody>();
     }
 
-    public void AddRebotadorCasilla()
+
+    public void CallAndChangeTypeSquareAction(TypeSquare newType)
     {
-        RebotadorGO.SetActive(true);
+        SetTypeSquare(newType);
+        CallSquareIsChangingTypeAction();
     }
 
-    IEnumerator CasillaFall()
+    public void SetTypeSquare(TypeSquare newType)
     {
-        meshRender.material = materialSelected;
-        yield return new WaitForSeconds(2);
-        FallOfCasilla();
+        typeSquare = newType;
     }
+
+    public void CallSquareIsChangingTypeAction()
+    {
+        StartCoroutine(SquareIsChangingType());
+    }
+
+    IEnumerator SquareIsChangingType()
+    {
+        meshRender.material = GetActualTypeSquareMaterial();
+        yield return new WaitForSeconds(timeToChangeTypeSquare);
+        CallSquareTypeAction();
+    }
+
+    Material GetActualTypeSquareMaterial()
+    {
+        switch (typeSquare)
+        {
+            case TypeSquare.fall:
+                return materialFall;
+
+            case TypeSquare.rebotador:
+                return materialRebotador;
+
+            default:
+                return materialNormal;
+        }
+    }
+
+    void CallSquareTypeAction()
+    {
+        switch (typeSquare)
+        {
+            case TypeSquare.fall:
+                FallOfCasilla();
+                break;
+
+            case TypeSquare.rebotador:
+                AddRebotadorCasilla();
+                break;
+        }
+    }
+
+
 
     //interfaz?
     public void DisableCasilla()
     {
         this.gameObject.SetActive(false);
+    }
+
+    public void AddRebotadorCasilla()
+    {
+        RebotadorGO.SetActive(true);
     }
 
     public void FallOfCasilla()

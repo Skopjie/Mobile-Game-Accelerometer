@@ -22,16 +22,15 @@ public class GPManager : MonoBehaviour
         if (status == SignInStatus.Success)
         {
             statusText.text = "Good";
-            nameText.text = Social.localUser.userName + " / "+ Social.localUser.id;
+            nameText.text = Social.localUser.userName + " / " + Social.localUser.id;
             // Continue with Play Games Services
         }
         else
         {
-            statusText.text = "Fail: "+status;
+            statusText.text = "Fail: " + status;
             // Disable your integration with Play Games Services or show a login button
             // to ask users to sign-in. Clicking it should call
             // PlayGamesPlatform.Instance.ManuallyAuthenticate(ProcessAuthentication).
         }
     }
 }
-

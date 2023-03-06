@@ -99,6 +99,7 @@ public class TableMap : MonoBehaviour
         {
             casilla.ReturnCasillaInitialPosition();
         }
+
         casillasEliminadas.Clear();
         casillasRebotador.Clear();
     }
@@ -114,7 +115,7 @@ public class TableMap : MonoBehaviour
     void DisableCasilla(Vector2Int idCasilla)
     {
         Casilla casillaSeleccionada = casillas[idCasilla.x, idCasilla.y];
-        casillaSeleccionada.SelectCasillaDisactive();
+        casillaSeleccionada.CallAndChangeTypeSquareAction(TypeSquare.fall);
         casillasEliminadas.Add(casillaSeleccionada);
     }
 
@@ -130,7 +131,7 @@ public class TableMap : MonoBehaviour
 
     void AddRebotadorCasilla(Vector2Int idCasilla)
     {
-        casillas[idCasilla.x, idCasilla.y].AddRebotadorCasilla();
+        casillas[idCasilla.x, idCasilla.y].CallAndChangeTypeSquareAction(TypeSquare.rebotador);
         casillasRebotador.Add(casillas[idCasilla.x, idCasilla.y]);
     }
 

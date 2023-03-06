@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
+using UnityEditorInternal;
 enum idSelector
 {
     eliminado,
@@ -50,7 +50,7 @@ public class WindowToolPatron : EditorWindow
     GUIStyle greenBackgroundStyle;
 
 
-   [MenuItem("Window/Tool")]
+    [MenuItem("Window/Tool")]
     public static void ShowWindow()
     {
         EditorWindow.GetWindow<WindowToolPatron>("Tool");
@@ -120,7 +120,7 @@ public class WindowToolPatron : EditorWindow
     {
         backGroundSection.x = 0;
         backGroundSection.y = 0;
-        backGroundSection.width = Screen.width/2;
+        backGroundSection.width = Screen.width / 2;
         backGroundSection.height = Screen.height;
 
         GUI.DrawTexture(backGroundSection, backGroundTexture);
@@ -129,7 +129,7 @@ public class WindowToolPatron : EditorWindow
 
         headerSection.x = Screen.width / 2;
         headerSection.y = 0;
-        headerSection.width = Screen.width/2;
+        headerSection.width = Screen.width / 2;
         headerSection.height = Screen.height;
 
         GUI.DrawTexture(headerSection, headerSectionTexture);
@@ -163,12 +163,12 @@ public class WindowToolPatron : EditorWindow
             idCasillaSeleccionada = idSelector.eliminado;
         }
 
-        if (GUILayout.Button("Rebo",greenBackgroundStyle))
+        if (GUILayout.Button("Rebo", greenBackgroundStyle))
         {
             idCasillaSeleccionada = idSelector.rebotador;
         }
 
-        if (GUILayout.Button("Delete",whiteBackgroundStyle))
+        if (GUILayout.Button("Delete", whiteBackgroundStyle))
         {
             idCasillaSeleccionada = idSelector.borrar;
         }
@@ -176,7 +176,7 @@ public class WindowToolPatron : EditorWindow
 
         GUILayout.Space(20);
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Delete All",GUILayout.Height(50)))
+        if (GUILayout.Button("Delete All", GUILayout.Height(50)))
         {
             DeleteAllCasillas();
         }
@@ -264,7 +264,7 @@ public class WindowToolPatron : EditorWindow
 
     void SelectCasilla(int fila, int columna)
     {
-        switch(idCasillaSeleccionada)
+        switch (idCasillaSeleccionada)
         {
             case idSelector.eliminado:
                 DeleteCasilla(fila, columna);
@@ -292,7 +292,7 @@ public class WindowToolPatron : EditorWindow
 
     void CopyDataFromPatron(PatronCasillasData data)
     {
-        InitData(); 
+        InitData();
 
         patronCasillaInfo.casillasEliminadas = data.casillasEliminadas;
         casillasFall = data.casillasEliminadas;
