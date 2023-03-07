@@ -1,19 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SquareRebotadorAction : MonoBehaviour
+public class SquareRebotadorAction : MonoBehaviour, ISquareActions
 {
     [Header("Componentes")]
     [SerializeField] GameObject RebotadorGO;
+    [SerializeField] SquareController squareController;
+
+    [Header("Variables Importantes")]
+    [SerializeField] DataProjectSO dataProject;
 
     private void Start()
     {
-        InitComponents();
+        InitSquareData();
     }
 
-    void InitComponents()
+    public void InitSquareData()
     {
+        if (squareController == null)
+            squareController = gameObject.GetComponent<SquareController>();
     }
 
     public void CallActionSquare()
@@ -24,5 +28,11 @@ public class SquareRebotadorAction : MonoBehaviour
     public void ReturnSquareToNormal()
     {
         RebotadorGO.SetActive(false);
+        squareController.SetNewMaterial(dataProject.normalSquareMaterial);
+    }
+
+    public Material GetMaterialSquare()
+    {
+        return dataProject.rebotadorSquareMaterial;
     }
 }

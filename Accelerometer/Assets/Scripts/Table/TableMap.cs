@@ -92,13 +92,13 @@ public class TableMap : MonoBehaviour
     {
         foreach (SquareController casilla in sqaureFallList)
         {
-            casilla.ReturnCasillaInitialPosition();
+            casilla.ReturnSquareToNormalState();
             allSquaresEnables.Add(casilla);
         }
 
         foreach (SquareController casilla in squareRebotadorList)
         {
-            casilla.ReturnCasillaInitialPosition();
+            casilla.ReturnSquareToNormalState();
             allSquaresEnables.Add(casilla);
         }
 

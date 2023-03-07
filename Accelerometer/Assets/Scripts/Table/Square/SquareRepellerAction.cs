@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class SquareFallAction : MonoBehaviour, ISquareActions
+public class SquareRepellerAction : MonoBehaviour, ISquareActions
 {
     [Header("Componentes")]
+    [SerializeField] GameObject RepellerGO;
     [SerializeField] SquareController squareController;
 
     [Header("Variables Importantes")]
@@ -21,20 +22,17 @@ public class SquareFallAction : MonoBehaviour, ISquareActions
 
     public void CallActionSquare()
     {
-        squareController.rgbd.isKinematic = false;
-        squareController.rgbd.useGravity = true;
+        RepellerGO.SetActive(true);
     }
 
     public void ReturnSquareToNormal()
     {
-        squareController.rgbd.isKinematic = true;
-        squareController.rgbd.useGravity = false;
-        gameObject.transform.position = squareController.squareInitialPosition;
+        RepellerGO.SetActive(false);
         squareController.SetNewMaterial(dataProject.normalSquareMaterial);
     }
 
     public Material GetMaterialSquare()
     {
-        return dataProject.fallSquareMaterial;
+        return dataProject.repellerSquareMaterial;
     }
 }

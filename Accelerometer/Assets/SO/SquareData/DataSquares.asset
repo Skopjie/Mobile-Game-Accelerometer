@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4abc9a4b0b3a2864d8ae25d881005333, type: 3}
+  m_Name: DataSquares
+  m_EditorClassIdentifier: 
+  normalSquareMaterial: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  fallSquareMaterial: {fileID: 2100000, guid: b450e694131d539468a4d8dcfdbb6a93, type: 2}
+  rebotadorSquareMaterial: {fileID: 2100000, guid: c7cfa0aa98363c949b0e27113ee74d90,
+    type: 2}
+  repellerSquareMaterial: {fileID: 2100000, guid: c8c6a97134d2bfc499ea296ace11530d,
+    type: 2}
