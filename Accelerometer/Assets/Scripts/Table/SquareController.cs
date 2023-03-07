@@ -6,26 +6,30 @@ public enum TypeSquare
 {
     normal,
     fall,
-    rebotador
+    rebotador,
+    repellers
 }
 
-public class Casilla : MonoBehaviour
+public class SquareController : MonoBehaviour
 {
     [Header("Datos Importantes")]
-    public Vector2 id;
-    public Vector3 casillaPosition;
-    public float timeToChangeTypeSquare;
+    [SerializeField]Vector2 idSquare;
+    Vector3 squareInitialPosition;
+
+    [SerializeField]float timeToChangeTypeSquare;
     TypeSquare typeSquare;
 
     [Header("Materiales")]
-    [SerializeField] Material materialNormal;
-    [SerializeField] Material materialFall;
-    [SerializeField] Material materialRebotador;
+    [SerializeField] Material normalSquareMaterial;
+    [SerializeField] Material fallSquareMaterial;
+    [SerializeField] Material rebotadorSquareMaterial;
+    [SerializeField] Material repellerSquareMaterial;
 
     [Header("Componentes")]
     [SerializeField] MeshRenderer meshRender;
     [SerializeField] Rigidbody rgbd;
     [SerializeField] GameObject RebotadorGO;
+    [SerializeField] GameObject RepellerGO;
 
     private void Start()
     {
@@ -39,8 +43,23 @@ public class Casilla : MonoBehaviour
 
         if(rgbd == null)
             rgbd = this.gameObject.GetComponent<Rigidbody>();
+
+        /*if (RebotadorGO == null)
+            RebotadorGO = this.gameObject.GetComponent<Rigidbody>();*/
     }
 
+    public void InitDataSquare(Vector2 newId, Vector3 newSquareInitialPosition)
+    {
+        idSquare = newId;
+        squareInitialPosition = newSquareInitialPosition;
+    }
+
+
+
+    public void SetTimeSquareCallAction(float newTime)
+    {
+        timeToChangeTypeSquare = newTime;
+    }
 
     public void CallAndChangeTypeSquareAction(TypeSquare newType)
     {
@@ -63,6 +82,7 @@ public class Casilla : MonoBehaviour
         meshRender.material = GetActualTypeSquareMaterial();
         yield return new WaitForSeconds(timeToChangeTypeSquare);
         CallSquareTypeAction();
+        //meshRender.material = materialNormal;
     }
 
     Material GetActualTypeSquareMaterial()
@@ -70,13 +90,16 @@ public class Casilla : MonoBehaviour
         switch (typeSquare)
         {
             case TypeSquare.fall:
-                return materialFall;
+                return fallSquareMaterial;
 
             case TypeSquare.rebotador:
-                return materialRebotador;
+                return rebotadorSquareMaterial;
+
+            case TypeSquare.repellers:
+                return repellerSquareMaterial;
 
             default:
-                return materialNormal;
+                return normalSquareMaterial;
         }
     }
 
@@ -115,10 +138,13 @@ public class Casilla : MonoBehaviour
 
     public void ReturnCasillaInitialPosition()
     {
-        meshRender.material = materialNormal;
+        typeSquare = TypeSquare.normal;
+        meshRender.material = normalSquareMaterial;
+
         rgbd.isKinematic = true;
         rgbd.useGravity = false;
-        gameObject.transform.position = casillaPosition;
+        gameObject.transform.position = squareInitialPosition;
+
         RebotadorGO.SetActive(false);
     }
 }

@@ -826,9 +826,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
         type: 3}
+      propertyPath: rows
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
+        type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 1892264713}
+    - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
+        type: 3}
+      propertyPath: columns
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
         type: 3}
       propertyPath: isPlaying
@@ -836,8 +846,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
         type: 3}
+      propertyPath: squarePrefab
+      value: 
+      objectReference: {fileID: 6441680545780717637, guid: ce36440b03cb39e4e985a3b8b8226724,
+        type: 3}
+    - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
+        type: 3}
       propertyPath: patronesData.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
         type: 3}
@@ -874,6 +890,12 @@ PrefabInstance:
       propertyPath: patronesData.Array.data[5]
       value: 
       objectReference: {fileID: 11400000, guid: c45386bba836afe4e9746bde3e6a88fc,
+        type: 2}
+    - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
+        type: 3}
+      propertyPath: patronesData.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2fac3bce17fe16e40bc3b8ac5d30a1e6,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec9e2eda67b744043b29688dd6f475d2, type: 3}

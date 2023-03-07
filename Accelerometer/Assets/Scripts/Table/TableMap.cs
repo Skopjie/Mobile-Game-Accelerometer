@@ -4,23 +4,28 @@ using UnityEngine;
 
 public class TableMap : MonoBehaviour
 {
-    public Casilla[,] casillas;
-    [SerializeField] List<Casilla> casillasEliminadas;
-    [SerializeField] List<Casilla> casillasRebotador;
+    public SquareController[,] allSquares;
+
+    [Header("Listas Temporales Casillas")]
+    [SerializeField] List<SquareController> sqaureFallList;
+    [SerializeField] List<SquareController> squareRebotadorList;
+
+    [SerializeField] List<SquareController> allSquaresEnables;
 
     [Header("Componentes")]
-    [SerializeField] GameObject casillaPrefab;
+    [SerializeField] GameObject squarePrefab;
 
     [SerializeField] List<PatronCasillasData> patronesData;
 
     [Header("Datos Tablero")]
-    [SerializeField] int filas;
-    [SerializeField] int columnas;
+    [SerializeField] int rows;
+    [SerializeField] int columns;
     [SerializeField] float timePerRound;
     [SerializeField] float timeBtwRound;
     [SerializeField] bool isPlaying = false;
 
-    Vector3 scalePrefab;
+    Vector3 scaleSquarePrefab;
+
     [Header("Datos Temporales")]
     [SerializeField] GameObject player;
     [SerializeField] Vector3 playerPos;
@@ -38,19 +43,15 @@ public class TableMap : MonoBehaviour
             StartCoroutine(NextRound(GetRandomPatron()));
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
 
     void InitTable()
     {
-        casillas = new Casilla[filas, columnas];
-        scalePrefab = casillaPrefab.transform.GetChild(0).GetComponent<Transform>().localScale;
+        allSquares = new SquareController[rows, columns];
+        scaleSquarePrefab = squarePrefab.transform.GetChild(0).GetComponent<Transform>().localScale;
 
-        for(int i = 0; i<filas; i++)
+        for(int i = 0; i<rows; i++)
         {
-            for (int j = 0; j < columnas; j++)
+            for (int j = 0; j < columns; j++)
             {
                 InstantiateCasilla(i, j);
             }
@@ -59,14 +60,13 @@ public class TableMap : MonoBehaviour
 
     void InstantiateCasilla(int fila, int columna)
     {
-        Vector3 positionCasilla = new Vector3(transform.position.x + (fila * scalePrefab.x), 0, transform.position.y + (columna * scalePrefab.z));
-        Casilla casilla = Instantiate(casillaPrefab, positionCasilla, Quaternion.identity, transform).transform.GetChild(0).GetComponent<Casilla>();
-        casilla.id = new Vector2(fila, columna);
-        casilla.casillaPosition = positionCasilla;
-        casillas[fila, columna] = casilla;
+        Vector3 positionCasilla = new Vector3(transform.position.x + (fila * scaleSquarePrefab.x), 0, transform.position.y + (columna * scaleSquarePrefab.z));
+        SquareController casilla = Instantiate(squarePrefab, positionCasilla, Quaternion.identity, transform).transform.GetChild(0).GetComponent<SquareController>();
+        casilla.InitDataSquare(new Vector2(fila, columna), positionCasilla);
+
+        allSquares[fila, columna] = casilla;
+        allSquaresEnables.Add(casilla);
     }
-
-
 
 
 
@@ -82,57 +82,66 @@ public class TableMap : MonoBehaviour
 
 
 
-    void BuildPatronMap(PatronCasillasData patron)
+    public void BuildPatronMap(PatronCasillasData patron)
     {
-        DisablePatronCasillas(patron);
-        AddRebotadorPatronCasillas(patron);
+        AddSquareFallPatron(patron);
+        AddSquareRebotadorPatron(patron);
     }
 
-    void ReturnMapNormal()
+    public void ReturnMapNormal()
     {
-        foreach (Casilla casilla in casillasEliminadas)
+        foreach (SquareController casilla in sqaureFallList)
         {
             casilla.ReturnCasillaInitialPosition();
+            allSquaresEnables.Add(casilla);
         }
 
-        foreach (Casilla casilla in casillasRebotador)
+        foreach (SquareController casilla in squareRebotadorList)
         {
             casilla.ReturnCasillaInitialPosition();
+            allSquaresEnables.Add(casilla);
         }
 
-        casillasEliminadas.Clear();
-        casillasRebotador.Clear();
+        sqaureFallList.Clear();
+        squareRebotadorList.Clear();
     }
 
-    void DisablePatronCasillas(PatronCasillasData patron)
+
+
+    void AddSquareFallPatron(PatronCasillasData patron)
     {
         foreach(Vector2Int id in patron.casillasEliminadas)
         {
-            DisableCasilla(id);
+            AddSquareFall(id);
         }
     }
 
-    void DisableCasilla(Vector2Int idCasilla)
+    void AddSquareFall(Vector2Int idCasilla)
     {
-        Casilla casillaSeleccionada = casillas[idCasilla.x, idCasilla.y];
+        SquareController casillaSeleccionada = allSquares[idCasilla.x, idCasilla.y];
         casillaSeleccionada.CallAndChangeTypeSquareAction(TypeSquare.fall);
-        casillasEliminadas.Add(casillaSeleccionada);
+
+        sqaureFallList.Add(casillaSeleccionada);
+        allSquaresEnables.Remove(casillaSeleccionada);
     }
 
 
 
-    void AddRebotadorPatronCasillas(PatronCasillasData patron)
+    void AddSquareRebotadorPatron(PatronCasillasData patron)
     {
         foreach (Vector2Int id in patron.casillasRebotador)
         {
-            AddRebotadorCasilla(id);
+            AddSquareRebotador(id);
         }
     }
 
-    void AddRebotadorCasilla(Vector2Int idCasilla)
+    void AddSquareRebotador(Vector2Int idCasilla)
     {
-        casillas[idCasilla.x, idCasilla.y].CallAndChangeTypeSquareAction(TypeSquare.rebotador);
-        casillasRebotador.Add(casillas[idCasilla.x, idCasilla.y]);
+        SquareController casillaSeleccionada = allSquares[idCasilla.x, idCasilla.y];
+        casillaSeleccionada.CallAndChangeTypeSquareAction(TypeSquare.rebotador);
+
+        squareRebotadorList.Add(casillaSeleccionada);
+        allSquaresEnables.Remove(casillaSeleccionada);
     }
 
 
@@ -141,13 +150,13 @@ public class TableMap : MonoBehaviour
 
     void DisableRandomCasilla()
     {
-        DisableCasilla(GetRandomCasilla());
+        AddSquareFall(GetRandomCasilla());
     }
 
     Vector2Int GetRandomCasilla()
     {
-        int randomfila = Random.Range(0, filas);
-        int randomColumna = Random.Range(0, columnas);
+        int randomfila = Random.Range(0, rows);
+        int randomColumna = Random.Range(0, columns);
         return new Vector2Int(randomfila, randomColumna);
     }
 
