@@ -72,7 +72,7 @@ public class SquareController : MonoBehaviour
                 break;
 
             case TypeSquare.rebotador:
-                squareActions = GetComponent<SquareRepellerAction>();
+                squareActions = GetComponent<SquareRebotadorAction>();
                 break;
 
             case TypeSquare.repellers:

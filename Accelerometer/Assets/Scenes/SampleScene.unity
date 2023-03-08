@@ -853,19 +853,19 @@ PrefabInstance:
     - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
         type: 3}
       propertyPath: patronesData.Array.size
-      value: 7
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
         type: 3}
       propertyPath: patronesData.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 2b865cb6c6996074ca5ebfa684180059,
+      objectReference: {fileID: 11400000, guid: 5f9243c4c462a494b91ee14db9085c72,
         type: 2}
     - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
         type: 3}
       propertyPath: patronesData.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 22f55751be8d0da4fa9839e07702945d,
+      objectReference: {fileID: 11400000, guid: 477940ed67a6e4a4191414f6a71081a5,
         type: 2}
     - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
         type: 3}
@@ -896,6 +896,12 @@ PrefabInstance:
       propertyPath: patronesData.Array.data[6]
       value: 
       objectReference: {fileID: 11400000, guid: 2fac3bce17fe16e40bc3b8ac5d30a1e6,
+        type: 2}
+    - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
+        type: 3}
+      propertyPath: patronesData.Array.data[7]
+      value: 
+      objectReference: {fileID: 11400000, guid: 5f9243c4c462a494b91ee14db9085c72,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec9e2eda67b744043b29688dd6f475d2, type: 3}

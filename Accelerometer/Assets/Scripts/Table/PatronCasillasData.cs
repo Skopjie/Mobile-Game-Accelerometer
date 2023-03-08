@@ -9,4 +9,5 @@ public class PatronCasillasData : ScriptableObject
 
     public List<Vector2Int> casillasEliminadas;
     public List<Vector2Int> casillasRebotador;
+    public List<Vector2Int> squaresRepeller;
 }

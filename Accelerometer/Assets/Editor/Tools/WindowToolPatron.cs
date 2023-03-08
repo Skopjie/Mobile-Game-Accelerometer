@@ -6,6 +6,7 @@ enum idSelector
 {
     eliminado,
     rebotador,
+    repeller,
     borrar
 }
 
@@ -36,18 +37,21 @@ public class WindowToolPatron : EditorWindow
     SerializedProperty namePatronCasillas;
     SerializedProperty casillasEliminadas;
     SerializedProperty casillasRebotador;
+    SerializedProperty squareRepellerProperty;
 
     int filaSize = 8;
     int columnaSize = 8;
 
 
-    List<Vector2Int> casillasFall = new List<Vector2Int>();
-    List<Vector2Int> casillasRebo = new List<Vector2Int>();
+    List<Vector2Int> squaresFallList = new List<Vector2Int>();
+    List<Vector2Int> squaresRebotadorList = new List<Vector2Int>();
+    List<Vector2Int> squareRepellerList = new List<Vector2Int>();
     idSelector idCasillaSeleccionada;
 
     GUIStyle redBackgroundStyle;
     GUIStyle whiteBackgroundStyle;
     GUIStyle greenBackgroundStyle;
+    GUIStyle purpleBackgroundStyle;
 
 
     [MenuItem("Window/Tool")]
@@ -83,6 +87,7 @@ public class WindowToolPatron : EditorWindow
         namePatronCasillas = casillasSerializedObject.FindProperty("namePatron");
         casillasEliminadas = casillasSerializedObject.FindProperty("casillasEliminadas");
         casillasRebotador = casillasSerializedObject.FindProperty("casillasRebotador");
+        squareRepellerProperty = casillasSerializedObject.FindProperty("squaresRepeller");
     }
 
     void SetButtonsColor()
@@ -101,6 +106,11 @@ public class WindowToolPatron : EditorWindow
         greenBackgroundStyle.normal.background = MakeBackgroundTexture(10, 10, Color.green);
         greenBackgroundStyle.normal.textColor = Color.black;
         greenBackgroundStyle.richText = true;
+
+        purpleBackgroundStyle = new GUIStyle(GUI.skin.button);
+        purpleBackgroundStyle.normal.background = MakeBackgroundTexture(10, 10, Color.magenta);
+        purpleBackgroundStyle.normal.textColor = Color.black;
+        purpleBackgroundStyle.richText = true;
     }
 
     private void OnGUI()
@@ -166,6 +176,11 @@ public class WindowToolPatron : EditorWindow
         if (GUILayout.Button("Rebo", greenBackgroundStyle))
         {
             idCasillaSeleccionada = idSelector.rebotador;
+        }
+
+        if (GUILayout.Button("Repe", purpleBackgroundStyle))
+        {
+            idCasillaSeleccionada = idSelector.repeller;
         }
 
         if (GUILayout.Button("Delete", whiteBackgroundStyle))
@@ -252,11 +267,14 @@ public class WindowToolPatron : EditorWindow
 
     GUIStyle ChoseColorButton(int fila, int columna)
     {
-        if (casillasFall.Contains(new Vector2Int(fila, columna)))
+        if (squaresFallList.Contains(new Vector2Int(fila, columna)))
             return redBackgroundStyle;
 
-        else if (casillasRebo.Contains(new Vector2Int(fila, columna)))
+        else if (squaresRebotadorList.Contains(new Vector2Int(fila, columna)))
             return greenBackgroundStyle;
+
+        else if (squareRepellerList.Contains(new Vector2Int(fila, columna)))
+            return purpleBackgroundStyle;
 
         else
             return whiteBackgroundStyle;
@@ -268,19 +286,28 @@ public class WindowToolPatron : EditorWindow
         {
             case idSelector.eliminado:
                 DeleteCasilla(fila, columna);
-                if (!casillasFall.Contains(new Vector2Int(fila, columna)))
+                if (!squaresFallList.Contains(new Vector2Int(fila, columna)))
                 {
-                    casillasFall.Add(new Vector2Int(fila, columna));
-                    patronCasillaInfo.casillasEliminadas = casillasFall;
+                    squaresFallList.Add(new Vector2Int(fila, columna));
+                    patronCasillaInfo.casillasEliminadas = squaresFallList;
                 }
                 break;
 
             case idSelector.rebotador:
                 DeleteCasilla(fila, columna);
-                if (!casillasRebo.Contains(new Vector2Int(fila, columna)))
+                if (!squaresRebotadorList.Contains(new Vector2Int(fila, columna)))
                 {
-                    casillasRebo.Add(new Vector2Int(fila, columna));
-                    patronCasillaInfo.casillasRebotador = casillasRebo;
+                    squaresRebotadorList.Add(new Vector2Int(fila, columna));
+                    patronCasillaInfo.casillasRebotador = squaresRebotadorList;
+                }
+                break;
+
+            case idSelector.repeller:
+                DeleteCasilla(fila, columna);
+                if (!squareRepellerList.Contains(new Vector2Int(fila, columna)))
+                {
+                    squareRepellerList.Add(new Vector2Int(fila, columna));
+                    patronCasillaInfo.squaresRepeller = squareRepellerList;
                 }
                 break;
 
@@ -295,10 +322,13 @@ public class WindowToolPatron : EditorWindow
         InitData();
 
         patronCasillaInfo.casillasEliminadas = data.casillasEliminadas;
-        casillasFall = data.casillasEliminadas;
+        squaresFallList = data.casillasEliminadas;
 
         patronCasillaInfo.casillasRebotador = data.casillasRebotador;
-        casillasRebo = data.casillasRebotador;
+        squaresRebotadorList = data.casillasRebotador;
+
+        patronCasillaInfo.squaresRepeller = data.squaresRepeller;
+        squareRepellerList = data.squaresRepeller;
 
         patronCasillaInfo.namePatron = data.namePatron;
 
@@ -315,11 +345,14 @@ public class WindowToolPatron : EditorWindow
 
     void DeleteCasilla(int fila, int columna)
     {
-        if (casillasFall.Contains(new Vector2Int(fila, columna)))
-            casillasFall.Remove(new Vector2Int(fila, columna));
+        if (squaresFallList.Contains(new Vector2Int(fila, columna)))
+            squaresFallList.Remove(new Vector2Int(fila, columna));
 
-        if (casillasRebo.Contains(new Vector2Int(fila, columna)))
-            casillasRebo.Remove(new Vector2Int(fila, columna));
+        if (squaresRebotadorList.Contains(new Vector2Int(fila, columna)))
+            squaresRebotadorList.Remove(new Vector2Int(fila, columna));
+
+        if (squareRepellerList.Contains(new Vector2Int(fila, columna)))
+            squareRepellerList.Remove(new Vector2Int(fila, columna));
     }
 
     void DrawPropertiesSOPanel()
@@ -333,6 +366,7 @@ public class WindowToolPatron : EditorWindow
         EditorGUILayout.PropertyField(namePatronCasillas, new GUIContent("Nombre Patron"), true);
         EditorGUILayout.PropertyField(casillasEliminadas, new GUIContent("Casillas Eliminadas"), true);
         EditorGUILayout.PropertyField(casillasRebotador, new GUIContent("Casillas Rebotador"), true);
+        EditorGUILayout.PropertyField(squareRepellerProperty, new GUIContent("Squares Repeller"), true);
 
         GUILayout.Space(20);
 
@@ -362,8 +396,8 @@ public class WindowToolPatron : EditorWindow
         PatronCasillasData myType = AssetDatabase.LoadAssetAtPath(dataPath, typeof(PatronCasillasData)) as PatronCasillasData;
         AssetDatabase.CreateAsset(WindowToolPatron.patronCasillaInfo, dataPath);
 
-        patronCasillaInfo.casillasEliminadas = casillasFall;
-        patronCasillaInfo.casillasRebotador = casillasRebo;
+        patronCasillaInfo.casillasEliminadas = squaresFallList;
+        patronCasillaInfo.casillasRebotador = squaresRebotadorList;
 
         //InitData();
 

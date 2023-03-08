@@ -7,8 +7,7 @@ public class TableMap : MonoBehaviour
     public SquareController[,] allSquares;
 
     [Header("Listas Temporales Casillas")]
-    [SerializeField] List<SquareController> sqaureFallList;
-    [SerializeField] List<SquareController> squareRebotadorList;
+    [SerializeField] List<SquareController> squaresDisable;
 
     [SerializeField] List<SquareController> allSquaresEnables;
 
@@ -86,24 +85,17 @@ public class TableMap : MonoBehaviour
     {
         AddSquareFallPatron(patron);
         AddSquareRebotadorPatron(patron);
+        AddSquareRepellerPatron(patron);
     }
 
     public void ReturnMapNormal()
     {
-        foreach (SquareController casilla in sqaureFallList)
+        foreach (SquareController casilla in squaresDisable)
         {
             casilla.ReturnSquareToNormalState();
             allSquaresEnables.Add(casilla);
         }
-
-        foreach (SquareController casilla in squareRebotadorList)
-        {
-            casilla.ReturnSquareToNormalState();
-            allSquaresEnables.Add(casilla);
-        }
-
-        sqaureFallList.Clear();
-        squareRebotadorList.Clear();
+        squaresDisable.Clear();
     }
 
 
@@ -121,7 +113,7 @@ public class TableMap : MonoBehaviour
         SquareController casillaSeleccionada = allSquares[idCasilla.x, idCasilla.y];
         casillaSeleccionada.CallAndChangeTypeSquareAction(TypeSquare.fall);
 
-        sqaureFallList.Add(casillaSeleccionada);
+        squaresDisable.Add(casillaSeleccionada);
         allSquaresEnables.Remove(casillaSeleccionada);
     }
 
@@ -140,11 +132,28 @@ public class TableMap : MonoBehaviour
         SquareController casillaSeleccionada = allSquares[idCasilla.x, idCasilla.y];
         casillaSeleccionada.CallAndChangeTypeSquareAction(TypeSquare.rebotador);
 
-        squareRebotadorList.Add(casillaSeleccionada);
+        squaresDisable.Add(casillaSeleccionada);
         allSquaresEnables.Remove(casillaSeleccionada);
     }
 
 
+
+    void AddSquareRepellerPatron(PatronCasillasData patron)
+    {
+        foreach (Vector2Int id in patron.squaresRepeller)
+        {
+            AddSquareRepeller(id);
+        }
+    }
+
+    void AddSquareRepeller(Vector2Int idCasilla)
+    {
+        SquareController casillaSeleccionada = allSquares[idCasilla.x, idCasilla.y];
+        casillaSeleccionada.CallAndChangeTypeSquareAction(TypeSquare.repellers);
+
+        squaresDisable.Add(casillaSeleccionada);
+        allSquaresEnables.Remove(casillaSeleccionada);
+    }
 
 
 
