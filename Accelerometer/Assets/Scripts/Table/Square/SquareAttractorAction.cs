@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class SquareRepellerAction : MonoBehaviour, ISquareActions
+public class SquareAttractorAction : MonoBehaviour, ISquareActions
 {
     [Header("Componentes")]
-    [SerializeField] RepellersController repellerController;
+    [SerializeField] AttractorController attractorController;
     [SerializeField] SquareController squareController;
 
     [Header("Variables Importantes")]
@@ -22,17 +22,19 @@ public class SquareRepellerAction : MonoBehaviour, ISquareActions
 
     public void CallActionSquare()
     {
-        repellerController.EnableObject();
+        attractorController.EnableObject();
     }
 
     public void ReturnSquareToNormal()
     {
-        repellerController.DisableObject();
+        attractorController.DisableObject();
         squareController.SetNewMaterial(dataProject.normalSquareMaterial);
     }
 
     public Material GetMaterialSquare()
     {
-        return dataProject.repellerSquareMaterial;
+        return dataProject.attractorSquareMaterial;
     }
 }
+
+

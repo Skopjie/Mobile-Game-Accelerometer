@@ -842,7 +842,7 @@ PrefabInstance:
     - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
         type: 3}
       propertyPath: isPlaying
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
         type: 3}
@@ -859,13 +859,13 @@ PrefabInstance:
         type: 3}
       propertyPath: patronesData.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 5f9243c4c462a494b91ee14db9085c72,
+      objectReference: {fileID: 11400000, guid: 7af70865b7942914ebf55ce0cc120d80,
         type: 2}
     - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
         type: 3}
       propertyPath: patronesData.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 477940ed67a6e4a4191414f6a71081a5,
+      objectReference: {fileID: 11400000, guid: bb23cdb8298c5e846a420f0399b2a7c0,
         type: 2}
     - target: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
         type: 3}
@@ -989,18 +989,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 57.3, y: 0, z: 0}
---- !u!114 &1161764360 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 120375795663676743, guid: ec9e2eda67b744043b29688dd6f475d2,
-    type: 3}
-  m_PrefabInstance: {fileID: 800404006}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 183954f4286c1834f932358c174d39a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1259092105
 GameObject:
   m_ObjectHideFlags: 0
@@ -1437,6 +1425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceSpeed: 35
+  playerPos: {x: 0, y: 0, z: 0}
 --- !u!54 &1892264715
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1718,8 +1707,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1161764360}
-        m_TargetAssemblyTypeName: TableMap, Assembly-CSharp
+      - m_Target: {fileID: 1892264714}
+        m_TargetAssemblyTypeName: AccelerometerInput, Assembly-CSharp
         m_MethodName: ReturnPlayer
         m_Mode: 1
         m_Arguments:

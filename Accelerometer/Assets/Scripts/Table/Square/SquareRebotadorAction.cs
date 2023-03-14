@@ -3,7 +3,7 @@ using UnityEngine;
 public class SquareRebotadorAction : MonoBehaviour, ISquareActions
 {
     [Header("Componentes")]
-    [SerializeField] GameObject RebotadorGO;
+    [SerializeField] RebotadorContoller RebotadorGO;
     [SerializeField] SquareController squareController;
 
     [Header("Variables Importantes")]
@@ -22,12 +22,12 @@ public class SquareRebotadorAction : MonoBehaviour, ISquareActions
 
     public void CallActionSquare()
     {
-        RebotadorGO.SetActive(true);
+        RebotadorGO.EnableObject();
     }
 
     public void ReturnSquareToNormal()
     {
-        RebotadorGO.SetActive(false);
+        RebotadorGO.DisableObject();
         squareController.SetNewMaterial(dataProject.normalSquareMaterial);
     }
 

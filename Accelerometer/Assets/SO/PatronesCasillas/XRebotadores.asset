@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b6f6e8d78cc9504496ce3e21ac7bb15, type: 3}
-  m_Name: X
+  m_Name: XRebotadores
   m_EditorClassIdentifier: 
-  namePatron: X
-  casillasEliminadas:
+  namePatron: XRebotadores
+  squareFallList:
   - {x: 7, y: 0}
   - {x: 6, y: 1}
   - {x: 5, y: 2}
@@ -30,4 +30,13 @@ MonoBehaviour:
   - {x: 5, y: 5}
   - {x: 6, y: 6}
   - {x: 7, y: 7}
-  casillasRebotador: []
+  squareRebotadorList:
+  - {x: 7, y: 3}
+  - {x: 7, y: 4}
+  - {x: 0, y: 3}
+  - {x: 0, y: 4}
+  - {x: 3, y: 0}
+  - {x: 4, y: 0}
+  - {x: 3, y: 7}
+  - {x: 4, y: 7}
+  squaresRepellerList: []

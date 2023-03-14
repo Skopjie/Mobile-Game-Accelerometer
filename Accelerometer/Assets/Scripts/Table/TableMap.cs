@@ -4,16 +4,14 @@ using UnityEngine;
 
 public class TableMap : MonoBehaviour
 {
-    public SquareController[,] allSquares;
+    SquareController[,] allSquares;
 
     [Header("Listas Temporales Casillas")]
     [SerializeField] List<SquareController> squaresDisable;
-
     [SerializeField] List<SquareController> allSquaresEnables;
 
     [Header("Componentes")]
     [SerializeField] GameObject squarePrefab;
-
     [SerializeField] List<PatronCasillasData> patronesData;
 
     [Header("Datos Tablero")]
@@ -25,23 +23,13 @@ public class TableMap : MonoBehaviour
 
     Vector3 scaleSquarePrefab;
 
-    [Header("Datos Temporales")]
-    [SerializeField] GameObject player;
-    [SerializeField] Vector3 playerPos;
-
-
-    // Start is called before the first frame update
     void Start()
     {
         InitTable();
-        playerPos = player.transform.position;
-
-        //InvokeRepeating("DisableRandomCasilla", 2, 2);
 
         if(patronesData != null && isPlaying == true)
             StartCoroutine(NextRound(GetRandomPatron()));
     }
-
 
     void InitTable()
     {
@@ -49,22 +37,18 @@ public class TableMap : MonoBehaviour
         scaleSquarePrefab = squarePrefab.transform.GetChild(0).GetComponent<Transform>().localScale;
 
         for(int i = 0; i<rows; i++)
-        {
             for (int j = 0; j < columns; j++)
-            {
                 InstantiateCasilla(i, j);
-            }
-        }
     }
 
     void InstantiateCasilla(int fila, int columna)
     {
-        Vector3 positionCasilla = new Vector3(transform.position.x + (fila * scaleSquarePrefab.x), 0, transform.position.y + (columna * scaleSquarePrefab.z));
-        SquareController casilla = Instantiate(squarePrefab, positionCasilla, Quaternion.identity, transform).transform.GetChild(0).GetComponent<SquareController>();
-        casilla.InitDataSquare(new Vector2(fila, columna), positionCasilla);
+        Vector3 squarePosition = new Vector3(transform.position.x + (fila * scaleSquarePrefab.x), 0, transform.position.y + (columna * scaleSquarePrefab.z));
+        SquareController newSquare = Instantiate(squarePrefab, squarePosition, Quaternion.identity, transform).transform.GetChild(0).GetComponent<SquareController>();
+        newSquare.InitDataSquare(new Vector2(fila, columna), squarePosition);
 
-        allSquares[fila, columna] = casilla;
-        allSquaresEnables.Add(casilla);
+        allSquares[fila, columna] = newSquare;
+        allSquaresEnables.Add(newSquare);
     }
 
 
@@ -79,13 +63,35 @@ public class TableMap : MonoBehaviour
         StartCoroutine(NextRound(GetRandomPatron()));
     }
 
+    PatronCasillasData GetRandomPatron()
+    {
+        int randomPatron = Random.Range(0, patronesData.Count);
+        return patronesData[randomPatron];
+    }
+
 
 
     public void BuildPatronMap(PatronCasillasData patron)
     {
-        AddSquareFallPatron(patron);
-        AddSquareRebotadorPatron(patron);
-        AddSquareRepellerPatron(patron);
+        SetSquareListType(patron.squareFallList, TypeSquare.fall);
+        SetSquareListType(patron.squareRebotadorList, TypeSquare.rebotador);
+        SetSquareListType(patron.squaresRepellerList, TypeSquare.repellers);
+        SetSquareListType(patron.squaresAttractorList, TypeSquare.attractor);
+    }
+
+    void SetSquareListType(List<Vector2Int> squareList, TypeSquare typeSquare)
+    {
+        foreach (Vector2Int id in squareList)
+            SetSquareType(id, typeSquare);
+    }
+
+    void SetSquareType(Vector2Int idCasilla, TypeSquare typeSquare)
+    {
+        SquareController casillaSeleccionada = allSquares[idCasilla.x, idCasilla.y];
+        casillaSeleccionada.CallAndChangeTypeSquareAction(typeSquare);
+
+        squaresDisable.Add(casillaSeleccionada);
+        allSquaresEnables.Remove(casillaSeleccionada);
     }
 
     public void ReturnMapNormal()
@@ -97,90 +103,4 @@ public class TableMap : MonoBehaviour
         }
         squaresDisable.Clear();
     }
-
-
-
-    void AddSquareFallPatron(PatronCasillasData patron)
-    {
-        foreach(Vector2Int id in patron.casillasEliminadas)
-        {
-            AddSquareFall(id);
-        }
-    }
-
-    void AddSquareFall(Vector2Int idCasilla)
-    {
-        SquareController casillaSeleccionada = allSquares[idCasilla.x, idCasilla.y];
-        casillaSeleccionada.CallAndChangeTypeSquareAction(TypeSquare.fall);
-
-        squaresDisable.Add(casillaSeleccionada);
-        allSquaresEnables.Remove(casillaSeleccionada);
-    }
-
-
-
-    void AddSquareRebotadorPatron(PatronCasillasData patron)
-    {
-        foreach (Vector2Int id in patron.casillasRebotador)
-        {
-            AddSquareRebotador(id);
-        }
-    }
-
-    void AddSquareRebotador(Vector2Int idCasilla)
-    {
-        SquareController casillaSeleccionada = allSquares[idCasilla.x, idCasilla.y];
-        casillaSeleccionada.CallAndChangeTypeSquareAction(TypeSquare.rebotador);
-
-        squaresDisable.Add(casillaSeleccionada);
-        allSquaresEnables.Remove(casillaSeleccionada);
-    }
-
-
-
-    void AddSquareRepellerPatron(PatronCasillasData patron)
-    {
-        foreach (Vector2Int id in patron.squaresRepeller)
-        {
-            AddSquareRepeller(id);
-        }
-    }
-
-    void AddSquareRepeller(Vector2Int idCasilla)
-    {
-        SquareController casillaSeleccionada = allSquares[idCasilla.x, idCasilla.y];
-        casillaSeleccionada.CallAndChangeTypeSquareAction(TypeSquare.repellers);
-
-        squaresDisable.Add(casillaSeleccionada);
-        allSquaresEnables.Remove(casillaSeleccionada);
-    }
-
-
-
-    void DisableRandomCasilla()
-    {
-        AddSquareFall(GetRandomCasilla());
-    }
-
-    Vector2Int GetRandomCasilla()
-    {
-        int randomfila = Random.Range(0, rows);
-        int randomColumna = Random.Range(0, columns);
-        return new Vector2Int(randomfila, randomColumna);
-    }
-
-    PatronCasillasData GetRandomPatron()
-    {
-        int randomPatron = Random.Range(0, patronesData.Count);
-        return patronesData[randomPatron];
-    }
-
-
-
-    public void ReturnPlayer()
-    {
-        player.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-        player.transform.position = playerPos;
-    }
-
 }

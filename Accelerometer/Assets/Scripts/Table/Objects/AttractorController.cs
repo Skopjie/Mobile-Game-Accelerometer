@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RepellersController : MonoBehaviour, IObject
+public class AttractorController : MonoBehaviour, IObject
 {
     [SerializeField] float forceFactor;
     [SerializeField] List<Rigidbody> bodies = new List<Rigidbody>();
@@ -27,7 +27,7 @@ public class RepellersController : MonoBehaviour, IObject
     {
         foreach (Rigidbody rgbd in bodies)
         {
-            rgbd.AddForce((rgbd.position - transform.position) * forceFactor * Time.fixedDeltaTime);
+            rgbd.AddForce((transform.position - rgbd.position) * forceFactor * Time.fixedDeltaTime);
         }
     }
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rebotador : MonoBehaviour
+public class RebotadorContoller : MonoBehaviour, IObject
 {
     [SerializeField] float explosionForce;
     [SerializeField] float explosionRadioForce;
@@ -21,14 +21,22 @@ public class Rebotador : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.GetComponent<AccelerometerInput>())
-        {
-            Debug.Log("Choque");
             AplyForceToObject(collision.gameObject.GetComponent<Rigidbody>());
-        }
+    }
+
+    public void EnableObject()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void DisableObject()
+    {
+        gameObject.SetActive(false);
     }
 
     void AplyForceToObject(Rigidbody objectRgbd)
     {
         objectRgbd.AddExplosionForce(explosionForce, transform.position, explosionRadioForce, 0, ForceMode.Impulse);
     }
+
 }

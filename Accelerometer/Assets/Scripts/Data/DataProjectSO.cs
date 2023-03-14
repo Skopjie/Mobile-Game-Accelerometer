@@ -9,4 +9,5 @@ public class DataProjectSO : ScriptableObject
     public Material fallSquareMaterial;
     public Material rebotadorSquareMaterial;
     public Material repellerSquareMaterial;
+    public Material attractorSquareMaterial;
 }

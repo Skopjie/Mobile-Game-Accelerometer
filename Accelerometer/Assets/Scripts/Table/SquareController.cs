@@ -1,14 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-public enum TypeSquare
-{
-    normal,
-    fall,
-    rebotador,
-    repellers
-}
-
 public class SquareController : MonoBehaviour
 {
     [Header("Datos Importantes")]
@@ -77,6 +69,10 @@ public class SquareController : MonoBehaviour
 
             case TypeSquare.repellers:
                 squareActions = GetComponent<SquareRepellerAction>();
+                break;
+
+            case TypeSquare.attractor:
+                squareActions = GetComponent<SquareAttractorAction>();
                 break;
         }
     }
