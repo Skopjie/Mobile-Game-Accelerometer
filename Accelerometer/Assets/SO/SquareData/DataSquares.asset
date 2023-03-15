@@ -18,3 +18,5 @@ MonoBehaviour:
     type: 2}
   repellerSquareMaterial: {fileID: 2100000, guid: c8c6a97134d2bfc499ea296ace11530d,
     type: 2}
+  attractorSquareMaterial: {fileID: 2100000, guid: 1c5f433fb323fbb478e740fd5001c486,
+    type: 2}
