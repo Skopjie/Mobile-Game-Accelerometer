@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine.SocialPlatforms;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
@@ -10,6 +10,28 @@ public class GPManager : MonoBehaviour
 {
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI statusText;
+
+    [SerializeField] Button hostBtn;
+    [SerializeField] Button serverBtn;
+    [SerializeField] Button clientBtn;
+
+    private void Awake()
+    {
+        serverBtn.onClick.AddListener(() =>
+        {
+            NetworkManager.Singleton.StartServer();
+        });
+
+        hostBtn.onClick.AddListener(() =>
+        {
+            NetworkManager.Singleton.StartHost();
+        });
+
+        clientBtn.onClick.AddListener(() =>
+        {
+            NetworkManager.Singleton.StartClient();
+        });
+    }
 
     public void Start()
     {
@@ -33,4 +55,6 @@ public class GPManager : MonoBehaviour
             // PlayGamesPlatform.Instance.ManuallyAuthenticate(ProcessAuthentication).
         }
     }
+
+
 }

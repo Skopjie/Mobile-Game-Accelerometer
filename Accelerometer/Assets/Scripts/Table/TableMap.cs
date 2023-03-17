@@ -43,7 +43,7 @@ public class TableMap : MonoBehaviour
 
     void InstantiateCasilla(int fila, int columna)
     {
-        Vector3 squarePosition = new Vector3(transform.position.x + (fila * scaleSquarePrefab.x), 0, transform.position.y + (columna * scaleSquarePrefab.z));
+        Vector3 squarePosition = new Vector3(transform.position.x + (fila * scaleSquarePrefab.x), -2, transform.position.y + (columna * scaleSquarePrefab.z));
         SquareController newSquare = Instantiate(squarePrefab, squarePosition, Quaternion.identity, transform).transform.GetChild(0).GetComponent<SquareController>();
         newSquare.InitDataSquare(new Vector2(fila, columna), squarePosition);
 

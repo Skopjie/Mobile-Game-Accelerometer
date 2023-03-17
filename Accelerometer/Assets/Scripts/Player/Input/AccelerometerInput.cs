@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class AccelerometerInput : MonoBehaviour
+public class AccelerometerInput : NetworkBehaviour
 {
     Rigidbody rgbd;
 
@@ -20,8 +19,9 @@ public class AccelerometerInput : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        if (!IsOwner) return;
         GetAccelerometer();
     }
 
