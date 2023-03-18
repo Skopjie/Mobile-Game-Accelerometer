@@ -9,7 +9,9 @@ public class PlayerListUI : MonoBehaviour
     [SerializeField] Transform playerListContainer;
     [SerializeField] GameObject playerPanelPrefab;
 
+    [Header("Textos")]
     [SerializeField] TextMeshProUGUI nameLobbyText;
+    [SerializeField] TextMeshProUGUI numPlayersLobbyText;
 
     public void UpdateLobbyList(Lobby lobby)
     {
@@ -33,5 +35,11 @@ public class PlayerListUI : MonoBehaviour
     public void SetLobbyData(Lobby lobby)
     {
         nameLobbyText.text = lobby.Name;
+        numPlayersLobbyText.text = lobby.Players.Count+"/"+lobby.MaxPlayers;
+    }
+
+    public void ExitLobby()
+    {
+        LobbyController.Instance.LeaveLobby();
     }
 }

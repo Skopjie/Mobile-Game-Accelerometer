@@ -17,6 +17,9 @@ public struct LobbyInfo
 public class LobbyController : MonoBehaviour
 {
 
+    public static LobbyController Instance { get { return instace; } }
+    private static LobbyController instace;
+
     private Lobby hostLobby;
     private Lobby joinedLobby;
 
@@ -27,9 +30,15 @@ public class LobbyController : MonoBehaviour
 
     public UnityEvent<List<Lobby>> OnRefreshLobbyList;
     public UnityEvent<Lobby> OnRefreshPlayerList;
+    public UnityEvent OnJoinLobby;
 
-    // Start is called before the first frame update
-    async void Start()
+
+    private void Awake()
+    {
+        instace = this;
+    }
+
+    void Start()
     {
         InvokeRepeating("HandleLobbyHeartbeat", 10, 10);
         InvokeRepeating("HandleLobbyPoolUpdates", 1.1f, 1.1f);
@@ -40,10 +49,21 @@ public class LobbyController : MonoBehaviour
         playerName = newPlayerName;
     }
 
-    public void SetLobbyName(string newLobbyName)
+    public void SetNameLobby(string newLobbyName)
     {
         lobbyInfo.lobbyName = newLobbyName;
     }
+
+    public void SetNumerPlayerLobby(int newNumPlayer)
+    {
+        lobbyInfo.numPlayer = newNumPlayer;
+    }
+
+    public void SetProtectionLobby(bool newProtectionType)
+    {
+        lobbyInfo.IsPrivate = newProtectionType;
+    }
+
 
 
     public async void AuthenticatioMultiplayer()
@@ -67,6 +87,7 @@ public class LobbyController : MonoBehaviour
         if (joinedLobby != null)
         {
             Lobby lobby = await LobbyService.Instance.GetLobbyAsync(joinedLobby.Id);
+            PrintPlayers(lobby);
             joinedLobby = lobby;
         }
     }
@@ -77,7 +98,7 @@ public class LobbyController : MonoBehaviour
         {
             CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
             {
-                IsPrivate = false,
+                IsPrivate = lobbyInfo.IsPrivate,
                 Player = GetPlayer(),
                 Data = new Dictionary<string, DataObject>
                 {
@@ -85,13 +106,15 @@ public class LobbyController : MonoBehaviour
                 }
             };
 
-            Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyInfo.lobbyName, 4, createLobbyOptions);
+            Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyInfo.lobbyName, lobbyInfo.numPlayer, createLobbyOptions);
 
             Debug.Log("Se creo una patida llamada: " + lobbyInfo.lobbyName +" de" + lobby.MaxPlayers +
                 " jugadores, es una partida privada = " + lobbyInfo.IsPrivate +" su id es: " + lobby.Id);
 
             hostLobby = lobby;
             joinedLobby = hostLobby;
+
+            PrintPlayers(hostLobby);
         }
         catch(LobbyServiceException e)
         {
@@ -123,19 +146,22 @@ public class LobbyController : MonoBehaviour
         }
     }
 
-    private async void JoinLobbyByCode(string lobbyCode)
+    public async void JoinLobbyByCode(string lobbyCode)
     {
         try
         {
-            JoinLobbyByCodeOptions joinLobbyCodeOptions = new JoinLobbyByCodeOptions
+            JoinLobbyByIdOptions joinLobbyCodeOptions = new JoinLobbyByIdOptions
             {
                 Player = GetPlayer()
             };
-
-            Lobby lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode, joinLobbyCodeOptions);
+            Debug.Log("Vuamos");
+            //es anonimo porque me no funciona con parrelSync, mismo usurio
+            Lobby lobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobbyCode, joinLobbyCodeOptions);
             joinedLobby = lobby;
-
+            Debug.Log("Vuamos2");
             PrintPlayers(lobby);
+
+            OnJoinLobby?.Invoke();
         }
         catch (LobbyServiceException e)
         {
@@ -168,7 +194,7 @@ public class LobbyController : MonoBehaviour
         }
     }
 
-    async void LeaveLobby()
+    public async void LeaveLobby()
     {
         try
         {

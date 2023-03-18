@@ -1,13 +1,32 @@
 {
-    "m_SelectedDeviceId": "",
+    "m_SelectedDeviceId": "RF8MB08E4YK",
     "m_SelectedPackage": {
-        "deviceId": "",
-        "name": "",
-        "processId": 0,
+        "deviceId": "RF8MB08E4YK",
+        "name": "com.CarpetGames.Accelerometer",
+        "processId": 15915,
         "exited": false
     },
     "m_SelectedPriority": 0,
-    "m_KnownPackagesForSerialization": [],
+    "m_KnownPackagesForSerialization": [
+        {
+            "deviceId": "RF8MB08E4YK",
+            "name": "com.CarpetGames.Accelerometer",
+            "processId": 23567,
+            "exited": false
+        },
+        {
+            "deviceId": "RF8MB08E4YK",
+            "name": "com.CarpetGames.Accelerometer",
+            "processId": 29910,
+            "exited": false
+        },
+        {
+            "deviceId": "RF8MB08E4YK",
+            "name": "com.CarpetGames.Accelerometer",
+            "processId": 15915,
+            "exited": false
+        }
+    ],
     "m_Tags": {
         "m_Entries": [
             {
@@ -41,9 +60,20 @@
         ]
     },
     "m_MemoryViewerState": {
-        "MemoryWindowHeight": 0.0,
-        "MemoryWindowWidth": 0.0,
-        "MemoryTypeEnabled": [],
+        "MemoryWindowHeight": 300.0,
+        "MemoryWindowWidth": 170.0,
+        "MemoryTypeEnabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
         "MemoryGroup": 2,
         "Behavior": 0
     },
