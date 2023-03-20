@@ -1,57 +1,95 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class CreateLobbyUI : MonoBehaviour
 {
+    public static CreateLobbyUI Instance { get; private set; }
 
     const string PRIVATETEXT = "Private";
     const string PUBLICTEXT = "Public";
-    int numberPlayer = 2;
 
     [Header("Textos")]
+    [SerializeField] TMP_InputField inputNameLobbyText;
     [SerializeField] TextMeshProUGUI protectionLobbyText;
     [SerializeField] TextMeshProUGUI numPlayerText;
-    [SerializeField] TMP_InputField inputNameLobbyText;
 
-    public void ChangeTypeProtectionLobby()
-    {
-        if (protectionLobbyText.text == PUBLICTEXT){
-            protectionLobbyText.text = PRIVATETEXT;
-            LobbyController.Instance.SetProtectionLobby(true);
-        }
-        else{
-            protectionLobbyText.text = PUBLICTEXT;
-            LobbyController.Instance.SetProtectionLobby(false);
-        }
+    [Header("Botones")]
+    [SerializeField] Button createLobbyButton;
+    [SerializeField] Button exitCreateLobbyButton;
+    [SerializeField] Button protectionLobbyButton;
+    [SerializeField] Button maxPlayersLobbyButton;
+
+    [SerializeField] LobbyController lobbyControl;
+
+    LobbyInfo lobbyInfo;
+
+    private void Awake() {
+        Instance = this;
+        ResetLobbyData();
+
+        createLobbyButton.onClick.AddListener(() => {
+            Debug.Log(lobbyInfo.nameLobby + " / " + lobbyInfo.numPlayer + " / " + lobbyInfo.IsPrivate);
+            LobbyController.Instance.CreateLobby(lobbyInfo);
+            Hide();
+        });
+
+        exitCreateLobbyButton.onClick.AddListener(() => {
+            Hide();
+        });
+
+        inputNameLobbyText.onValueChanged.AddListener((string newValue) => {
+            ChangeNameLobby(newValue);
+        });
+
+        protectionLobbyButton.onClick.AddListener(() => {
+            ChangeTypeProtectionLobby();
+        });
+
+        maxPlayersLobbyButton.onClick.AddListener(() => {
+            ChangeNumPlayerLobby();
+        });
     }
 
-    public void ChangeNumPlayerLobby()
-    {
-        numberPlayer++;
-        if (numberPlayer == 5)
-            numberPlayer = 2;
 
-        LobbyController.Instance.SetNumerPlayerLobby(numberPlayer);
-        numPlayerText.text = ""+numberPlayer;
+    public void ChangeNameLobby(string newNameLobby) {
+        lobbyInfo.nameLobby = newNameLobby;
+        UpdateText();
     }
 
-    public void ChangeNameLobby(string newNameLobby)
-    {
-        LobbyController.Instance.SetNameLobby(newNameLobby);
+    public void ChangeTypeProtectionLobby() {
+        lobbyInfo.IsPrivate = !lobbyInfo.IsPrivate;
+        UpdateText();
     }
 
-    public void ResetLobbyUIData()
-    {
-        inputNameLobbyText.text = null;
-        LobbyController.Instance.SetNameLobby(null);
+    public void ChangeNumPlayerLobby() {
+        lobbyInfo.numPlayer++;
+        lobbyInfo.numPlayer = lobbyInfo.numPlayer == 5 ? 2 : lobbyInfo.numPlayer;
+        UpdateText();
+    }
 
-        numberPlayer = 2;
-        LobbyController.Instance.SetNumerPlayerLobby(numberPlayer);
-        numPlayerText.text = "" + numberPlayer;
+    public void UpdateText() {
+        inputNameLobbyText.text = lobbyInfo.nameLobby;
+        numPlayerText.text = "" + lobbyInfo.numPlayer;
+        protectionLobbyText.text = lobbyInfo.IsPrivate ? PRIVATETEXT : PUBLICTEXT;
+    }
 
-        protectionLobbyText.text = PUBLICTEXT;
-        LobbyController.Instance.SetProtectionLobby(false);
+    public void ResetLobbyData() {
+        lobbyInfo.nameLobby = "";
+        lobbyInfo.numPlayer = 2;
+        lobbyInfo.IsPrivate = false;
+    }
+
+    public void Hide() {
+        gameObject.SetActive(false);
+    }
+
+    public void Show() { 
+        gameObject.SetActive(true);
+
+        ResetLobbyData();
+        UpdateText();
     }
 }

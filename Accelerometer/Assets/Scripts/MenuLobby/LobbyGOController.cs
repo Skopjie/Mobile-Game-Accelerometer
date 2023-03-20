@@ -12,16 +12,20 @@ public class LobbyGOController : MonoBehaviour
     [SerializeField] TextMeshProUGUI nameLobbyText;
     [SerializeField] TextMeshProUGUI numPlayerLobbyText;
 
-    public void UpdateLobbyData(Lobby lobby)
-    {
+    public void ShowUpdateLobbyData(Lobby lobby) {
+        gameObject.SetActive(true);
         nameLobbyText.text = lobby.Name;
-        numPlayerLobbyText.text = lobby.Players.Count +"/"+lobby.MaxPlayers;
+        numPlayerLobbyText.text = lobby.Players.Count + "/" + lobby.MaxPlayers;
 
         idLobby = lobby.Id;
     }
 
-    public void JoinLobby()
-    {
+    public void HideLobby() {
+        idLobby = "";
+        gameObject.SetActive(false);
+    }
+
+    public void JoinLobby() {
         Debug.Log("Conectandose al lobby: " + idLobby);
         LobbyController.Instance.JoinLobbyByCode(idLobby);
     }

@@ -6,12 +6,18 @@ using UnityEngine;
 
 public class PlayerListUI : MonoBehaviour
 {
+    public static PlayerListUI Instance { get; private set; }
+
     [SerializeField] Transform playerListContainer;
     [SerializeField] GameObject playerPanelPrefab;
 
     [Header("Textos")]
     [SerializeField] TextMeshProUGUI nameLobbyText;
     [SerializeField] TextMeshProUGUI numPlayersLobbyText;
+
+    private void Awake() {
+        Instance = this;
+    }
 
     public void UpdateLobbyList(Lobby lobby)
     {

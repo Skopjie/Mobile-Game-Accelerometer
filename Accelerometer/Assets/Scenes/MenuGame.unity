@@ -332,7 +332,7 @@ GameObject:
   - component: {fileID: 17290928}
   - component: {fileID: 17290927}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TittleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -737,7 +737,7 @@ GameObject:
   - component: {fileID: 144575820}
   - component: {fileID: 144575819}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: LobbyNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -982,7 +982,7 @@ GameObject:
   - component: {fileID: 225871259}
   - component: {fileID: 225871258}
   m_Layer: 5
-  m_Name: Button
+  m_Name: RefreshButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1052,19 +1052,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 225871259}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1800510092}
-        m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
-        m_MethodName: ListLobbies
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &225871259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1623,7 +1611,7 @@ GameObject:
   - component: {fileID: 372394148}
   - component: {fileID: 372394147}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TittleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2029,7 +2017,7 @@ GameObject:
   - component: {fileID: 424790480}
   - component: {fileID: 424790479}
   m_Layer: 5
-  m_Name: Button
+  m_Name: JoinButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2162,6 +2150,7 @@ GameObject:
   - component: {fileID: 424983805}
   - component: {fileID: 424983804}
   - component: {fileID: 424983803}
+  - component: {fileID: 424983807}
   m_Layer: 5
   m_Name: CanvasConnect
   m_TagString: Untagged
@@ -2253,6 +2242,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &424983807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424983802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 502d9c2f848b2974bb814f97b5c48c6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  namePlayerInputField: {fileID: 1651203734}
+  multi: {fileID: 1371385400}
+  connectMultiplayerButton: {fileID: 449167952}
 --- !u!1 &449167950
 GameObject:
   m_ObjectHideFlags: 0
@@ -2266,7 +2270,7 @@ GameObject:
   - component: {fileID: 449167953}
   - component: {fileID: 449167952}
   m_Layer: 5
-  m_Name: Button
+  m_Name: ConnectButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2336,43 +2340,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 449167953}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 424983802}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1371385395}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1800510092}
-        m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
-        m_MethodName: AuthenticatioMultiplayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &449167953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2423,7 +2391,7 @@ GameObject:
   - component: {fileID: 628814729}
   - component: {fileID: 628814728}
   m_Layer: 5
-  m_Name: Panel (2)
+  m_Name: JoinPrivadaPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2743,19 +2711,7 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1583749056}
-        m_TargetAssemblyTypeName: CreateLobbyUI, Assembly-CSharp
-        m_MethodName: ChangeNameLobby
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2824,7 +2780,7 @@ GameObject:
   - component: {fileID: 758300446}
   - component: {fileID: 758300445}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TittleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3171,7 +3127,7 @@ GameObject:
   - component: {fileID: 856989124}
   - component: {fileID: 856989123}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: CrearPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3385,7 +3341,7 @@ GameObject:
   - component: {fileID: 964001026}
   - component: {fileID: 964001025}
   m_Layer: 5
-  m_Name: Button
+  m_Name: JoinButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3859,7 +3815,7 @@ GameObject:
   - component: {fileID: 1176417266}
   - component: {fileID: 1176417265}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TittleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4513,34 +4469,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1583749051}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1371385395}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1583749056}
-        m_TargetAssemblyTypeName: CreateLobbyUI, Assembly-CSharp
-        m_MethodName: ResetLobbyUIData
-        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4599,6 +4531,7 @@ GameObject:
   - component: {fileID: 1371385398}
   - component: {fileID: 1371385397}
   - component: {fileID: 1371385396}
+  - component: {fileID: 1371385400}
   m_Layer: 5
   m_Name: CanvasMultiplayer
   m_TagString: Untagged
@@ -4690,6 +4623,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1371385400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371385395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9178548bc07f2414c9f02f4326c1db6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  createLobbyButton: {fileID: 2045279933}
+  joinPublicButton: {fileID: 964001025}
+  joinPrivateButton: {fileID: 424790479}
 --- !u!1 &1375656868
 GameObject:
   m_ObjectHideFlags: 0
@@ -4976,19 +4924,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1461207411}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1583749056}
-        m_TargetAssemblyTypeName: CreateLobbyUI, Assembly-CSharp
-        m_MethodName: ChangeTypeProtectionLobby
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1461207411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5381,34 +5317,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1583749051}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1620660374}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1800510092}
-        m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
-        m_MethodName: CreateLobby
-        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5599,19 +5511,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1583745297}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1583749056}
-        m_TargetAssemblyTypeName: CreateLobbyUI, Assembly-CSharp
-        m_MethodName: ChangeNumPlayerLobby
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1583745297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5765,9 +5665,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb8c67190f175734f94274ee26e520da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputNameLobbyText: {fileID: 699658526}
   protectionLobbyText: {fileID: 1075994731}
   numPlayerText: {fileID: 1953910065}
-  inputNameLobbyText: {fileID: 699658526}
+  createLobbyButton: {fileID: 1556341907}
+  exitCreateLobbyButton: {fileID: 1316784353}
+  protectionLobbyButton: {fileID: 1461207410}
+  maxPlayersLobbyButton: {fileID: 1583745296}
+  lobbyControl: {fileID: 1800510092}
 --- !u!1 &1592036062
 GameObject:
   m_ObjectHideFlags: 0
@@ -5833,7 +5738,7 @@ GameObject:
   - component: {fileID: 1611471285}
   - component: {fileID: 1611471284}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TittleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6088,7 +5993,7 @@ GameObject:
   - component: {fileID: 1621753482}
   - component: {fileID: 1621753481}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: NumPlayerText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6224,7 +6129,7 @@ GameObject:
   - component: {fileID: 1651203735}
   - component: {fileID: 1651203734}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: NamePlayerInputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6412,7 +6317,7 @@ GameObject:
   - component: {fileID: 1666870095}
   - component: {fileID: 1666870094}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: BackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6483,18 +6388,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1685175529}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1371385395}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -6663,6 +6556,8 @@ MonoBehaviour:
   lobbyListContainer: {fileID: 1577481049}
   lobbyPanelPrefab: {fileID: 2743810261998603162, guid: 94c7fda87d4a23c40b915f5a82533c05,
     type: 3}
+  refreshLobbyListButton: {fileID: 225871258}
+  exitLobbyListButton: {fileID: 1666870094}
 --- !u!1 &1768695171
 GameObject:
   m_ObjectHideFlags: 0
@@ -6848,63 +6743,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f5ab6a0d3eb9a549af61e2f24b52d94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnRefreshLobbyList:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1685175534}
-        m_TargetAssemblyTypeName: LobbyListUI, Assembly-CSharp
-        m_MethodName: UpdateLobbyList
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnRefreshPlayerList:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1620660379}
-        m_TargetAssemblyTypeName: PlayerListUI, Assembly-CSharp
-        m_MethodName: UpdateLobbyList
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnJoinLobby:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1685175529}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1620660374}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
 --- !u!4 &1800510093
 Transform:
   m_ObjectHideFlags: 0
@@ -7280,7 +7118,7 @@ GameObject:
   - component: {fileID: 1939071947}
   - component: {fileID: 1939071946}
   m_Layer: 5
-  m_Name: Panel (1)
+  m_Name: JoinPublicaPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7690,7 +7528,7 @@ GameObject:
   - component: {fileID: 2045279934}
   - component: {fileID: 2045279933}
   m_Layer: 5
-  m_Name: Button
+  m_Name: ConnectButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

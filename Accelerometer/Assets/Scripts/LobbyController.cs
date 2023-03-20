@@ -11,7 +11,7 @@ using System;
 public struct LobbyInfo
 {
     public bool IsPrivate;
-    public string lobbyName;
+    public string nameLobby;
     public int numPlayer;
 }
 
@@ -28,17 +28,11 @@ public class LobbyController : MonoBehaviour
 
     private Lobby joinedLobby;
     private string playerName;
-    public LobbyInfo lobbyInfo;
 
     private float heartbeatTimer;
     private float lobbyPollTimer;
     private float refreshLobbyListTimer;
 
-
-
-    public UnityEvent<List<Lobby>> OnRefreshLobbyList;
-    public UnityEvent<Lobby> OnRefreshPlayerList;
-    public UnityEvent OnJoinLobby;
 
 
     /// <summary>
@@ -66,12 +60,15 @@ public class LobbyController : MonoBehaviour
     private void Awake()
     {
         instace = this;
+        DontDestroyOnLoad(this.gameObject);
     }
 
     void Start()
     {
         InvokeRepeating("HandleLobbyHeartbeat", heartbeatTimer, heartbeatTimer);
         InvokeRepeating("HandleLobbyPoolUpdates", lobbyPollTimer, lobbyPollTimer);
+
+        OnKickedFromLobby += LobbyManager_OnKickedFromLobby;
     }
 
     #region SetterInfoLobby
@@ -79,23 +76,11 @@ public class LobbyController : MonoBehaviour
     {
         playerName = newPlayerName;
     }
-
-    public void SetNameLobby(string newLobbyName)
-    {
-        lobbyInfo.lobbyName = newLobbyName;
-    }
-
-    public void SetNumerPlayerLobby(int newNumPlayer)
-    {
-        lobbyInfo.numPlayer = newNumPlayer;
-    }
-
-    public void SetProtectionLobby(bool newProtectionType)
-    {
-        lobbyInfo.IsPrivate = newProtectionType;
-    }
     #endregion
 
+    private void LobbyManager_OnKickedFromLobby(object sender, LobbyEventArgs e)
+    {
+    }
 
     public async void AuthenticatioMultiplayer(string playerName)
     {
@@ -132,7 +117,6 @@ public class LobbyController : MonoBehaviour
 
             //print players
             OnJoinedLobbyUpdate?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
-            PrintPlayers(joinedLobby);
 
             if (!IsPlayerInLobby())
             {
@@ -158,10 +142,11 @@ public class LobbyController : MonoBehaviour
         }
     }
 
-    public async void CreateLobby()
+    public async void CreateLobby(LobbyInfo lobbyInfo)
     {
         try
         {
+            Debug.Log(lobbyInfo.nameLobby + " / " + lobbyInfo.numPlayer + " / " + lobbyInfo.IsPrivate);
             CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
             {
                 IsPrivate = lobbyInfo.IsPrivate,
@@ -173,7 +158,7 @@ public class LobbyController : MonoBehaviour
                 }
             };
 
-            Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyInfo.lobbyName, lobbyInfo.numPlayer, createLobbyOptions);
+            Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyInfo.nameLobby, lobbyInfo.numPlayer, createLobbyOptions);
 
             joinedLobby = lobby;
 
@@ -204,8 +189,7 @@ public class LobbyController : MonoBehaviour
             QueryResponse query = await Lobbies.Instance.QueryLobbiesAsync();
             Debug.Log("Lobbies found: " +query.Results.Count);
 
-            OnRefreshLobbyList?.Invoke(query.Results);
-            //OnLobbyListChanged?.Invoke(this, new OnLobbyListChangedEventArgs { lobbyList = query.Results });
+            OnLobbyListChanged?.Invoke(this, new OnLobbyListChangedEventArgs { lobbyList = query.Results });
         }
         catch (LobbyServiceException e)
         {
@@ -221,24 +205,18 @@ public class LobbyController : MonoBehaviour
             {
                 Player = GetPlayer()
             };
-            Debug.Log("Vuamos");
+
             //es anonimo porque me no funciona con parrelSync, mismo usurio
             Lobby lobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobbyCode, joinLobbyCodeOptions);
             joinedLobby = lobby;
-            Debug.Log("Vuamos2");
-            PrintPlayers(lobby);
 
-            OnJoinLobby?.Invoke();
+            OnJoinedLobby?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
+
         }
         catch (LobbyServiceException e)
         {
             Debug.Log(e);
         }
-    }
-
-    private void PrintPlayers(Lobby lobby)
-    {
-        OnRefreshPlayerList?.Invoke(lobby);
     }
 
     /*async void UpdateLobbyOption(string gameMode)
