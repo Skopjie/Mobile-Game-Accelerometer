@@ -5,23 +5,24 @@ using UnityEngine;
 
 public class MultiplayerUI: MonoBehaviour
 {
-    public static MultiplayerUI Instance { get; private set; }
-
-
     [Header("Botones")]
     [SerializeField] Button createLobbyButton;
     [SerializeField] Button joinPublicButton;
     [SerializeField] Button joinPrivateButton;
 
-    private void Awake() {
-        Instance = this;
+    [Header("Componentes")]
+    [SerializeField] CreateLobbyUI createLobbyUI;
+    [SerializeField] LobbyListUI lobbyListUI;
 
+    private void Awake() {
         createLobbyButton.onClick.AddListener(() => {
             HideCanvas();
+            createLobbyUI.ShowCanvas();
         });
 
         joinPublicButton.onClick.AddListener(() => {
             HideCanvas();
+            lobbyListUI.ShowCanvas();
         });
 
         joinPrivateButton.onClick.AddListener(() => {

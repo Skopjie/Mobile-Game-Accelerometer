@@ -6,10 +6,11 @@ using TMPro;
 
 public class CreateLobbyUI : MonoBehaviour
 {
-    public static CreateLobbyUI Instance { get; private set; }
-
     const string PRIVATETEXT = "Private";
     const string PUBLICTEXT = "Public";
+
+    [Header("Componentes")]
+    [SerializeField] PlayerListUI playerListUI;
 
     [Header("Textos")]
     [SerializeField] TMP_InputField inputNameLobbyText;
@@ -27,17 +28,17 @@ public class CreateLobbyUI : MonoBehaviour
     LobbyInfo lobbyInfo;
 
     private void Awake() {
-        Instance = this;
         ResetLobbyData();
 
         createLobbyButton.onClick.AddListener(() => {
             Debug.Log(lobbyInfo.nameLobby + " / " + lobbyInfo.numPlayer + " / " + lobbyInfo.IsPrivate);
             LobbyController.Instance.CreateLobby(lobbyInfo);
-            Hide();
+            HideCanvas();
+            playerListUI.ShowCanvas();
         });
 
         exitCreateLobbyButton.onClick.AddListener(() => {
-            Hide();
+            HideCanvas();
         });
 
         inputNameLobbyText.onValueChanged.AddListener((string newValue) => {
@@ -82,11 +83,11 @@ public class CreateLobbyUI : MonoBehaviour
         lobbyInfo.IsPrivate = false;
     }
 
-    public void Hide() {
+    public void HideCanvas() {
         gameObject.SetActive(false);
     }
 
-    public void Show() { 
+    public void ShowCanvas() { 
         gameObject.SetActive(true);
 
         ResetLobbyData();

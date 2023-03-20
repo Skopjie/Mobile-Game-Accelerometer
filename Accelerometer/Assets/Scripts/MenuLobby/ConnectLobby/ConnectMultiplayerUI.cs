@@ -10,7 +10,7 @@ public class ConnectMultiplayerUI : MonoBehaviour
 
     [Header("Componentes")]
     [SerializeField] TMP_InputField namePlayerInputField;
-    [SerializeField] MultiplayerUI multi;
+    [SerializeField] MultiplayerUI multiplayerUI;
 
     [Header("Botones")]
     [SerializeField] Button connectMultiplayerButton;
@@ -20,7 +20,7 @@ public class ConnectMultiplayerUI : MonoBehaviour
             SetPlayerName();
             LobbyController.Instance.AuthenticatioMultiplayer(namePlayer);
             HideCanvas();
-            multi.ShowCanvas();
+            multiplayerUI.ShowCanvas();
         });
     }
 

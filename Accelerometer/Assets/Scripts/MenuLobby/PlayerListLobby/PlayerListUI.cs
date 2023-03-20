@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class PlayerListUI : MonoBehaviour
 {
-    public static PlayerListUI Instance { get; private set; }
-
     [SerializeField] Transform playerListContainer;
     [SerializeField] GameObject playerPanelPrefab;
 
@@ -15,22 +13,22 @@ public class PlayerListUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI nameLobbyText;
     [SerializeField] TextMeshProUGUI numPlayersLobbyText;
 
-    private void Awake() {
-        Instance = this;
+    private void Start() {
+        LobbyController.Instance.OnJoinedLobby += UpdateLobbyList;
+        LobbyController.Instance.OnJoinedLobbyUpdate += UpdateLobbyList;
     }
 
-    public void UpdateLobbyList(Lobby lobby)
-    {
-        Debug.Log("Players in Lobby " + lobby.Name + " " + lobby.Data["GameMode"].Value);
+    public void UpdateLobbyList(object sender, LobbyController.LobbyEventArgs e) {
+        Debug.Log("Players in Lobby " + e.lobby.Name + " " + e.lobby.Data["GameMode"].Value);
 
-        SetLobbyData(lobby);
+        SetLobbyData(e.lobby);
 
         foreach (Transform child in playerListContainer)
         {
             Destroy(child.gameObject);
         }
 
-        foreach (Player player in lobby.Players)
+        foreach (Player player in e.lobby.Players)
         {
             PlayerSingleGOController playerSingle = Instantiate(playerPanelPrefab, playerListContainer).GetComponent<PlayerSingleGOController>();
             playerSingle.UpdateLobbyData(player);
@@ -47,5 +45,9 @@ public class PlayerListUI : MonoBehaviour
     public void ExitLobby()
     {
         LobbyController.Instance.LeaveLobby();
+    }
+
+    public void ShowCanvas() {
+        gameObject.SetActive(true);
     }
 }

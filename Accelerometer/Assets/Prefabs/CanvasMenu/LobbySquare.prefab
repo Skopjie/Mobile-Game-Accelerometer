@@ -309,6 +309,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idLobby: 
+  playerListUI: {fileID: 0}
+  joinLobbyButton: {fileID: 5710922264951063314}
   nameLobbyText: {fileID: 4918656095333489506}
   numPlayerLobbyText: {fileID: 1179061954976590286}
 --- !u!1 &3126454514691370510

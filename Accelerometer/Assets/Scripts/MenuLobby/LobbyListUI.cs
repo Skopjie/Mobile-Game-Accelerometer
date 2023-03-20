@@ -6,27 +6,24 @@ using UnityEngine;
 
 public class LobbyListUI : MonoBehaviour
 {
-    public static LobbyListUI Instance { get; private set; }
-
     [Header("Componentes")]
     [SerializeField] Transform lobbyListContainer;
     [SerializeField] GameObject lobbyPanelPrefab;
+    [SerializeField] PlayerListUI playerListUI;
 
     [Header("Botones")]
     [SerializeField] Button refreshLobbyListButton;
     [SerializeField] Button exitLobbyListButton;
 
-    List<LobbyGOController> lobbyList;
+    List<LobbyGOController> lobbyList = new List<LobbyGOController>();
 
     private void Awake() {
-        Instance = this;
-
         refreshLobbyListButton.onClick.AddListener(() => {
             LobbyController.Instance.ListLobbies();
         });
 
         exitLobbyListButton.onClick.AddListener(() => {
-            HideLobbyListCanvas();
+            HideCanvas();
         });
     }
 
@@ -39,7 +36,9 @@ public class LobbyListUI : MonoBehaviour
     void InitLobbyList() {
         for (int i = 0; i < 25; i++) {
             GameObject lobbySingleGO = Instantiate(lobbyPanelPrefab, lobbyListContainer);
-            lobbyList.Add(lobbySingleGO.GetComponent<LobbyGOController>());
+            LobbyGOController lobbyGO = lobbySingleGO.GetComponent<LobbyGOController>();
+            lobbyGO.InitData(this);
+            lobbyList.Add(lobbyGO);
             lobbySingleGO.SetActive(false);
         }
     }
@@ -57,7 +56,17 @@ public class LobbyListUI : MonoBehaviour
         }
     }
 
-    public void HideLobbyListCanvas() {
+    public void HideCanvas() {
         gameObject.SetActive(false);
+    }
+
+    public void ShowCanvas() {
+        gameObject.SetActive(true);
+        LobbyController.Instance.ListLobbies();
+    }
+
+    public void JoinLobby() {
+        HideCanvas();
+        playerListUI.ShowCanvas();
     }
 }

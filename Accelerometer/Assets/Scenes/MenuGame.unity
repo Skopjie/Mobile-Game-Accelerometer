@@ -2087,19 +2087,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 424790480}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &424790480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2255,7 +2243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   namePlayerInputField: {fileID: 1651203734}
-  multi: {fileID: 1371385400}
+  multiplayerUI: {fileID: 1371385400}
   connectMultiplayerButton: {fileID: 449167952}
 --- !u!1 &449167950
 GameObject:
@@ -3411,43 +3399,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 964001026}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1685175529}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1371385395}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1800510092}
-        m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
-        m_MethodName: ListLobbies
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &964001026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4638,6 +4590,8 @@ MonoBehaviour:
   createLobbyButton: {fileID: 2045279933}
   joinPublicButton: {fileID: 964001025}
   joinPrivateButton: {fileID: 424790479}
+  createLobbyUI: {fileID: 1583749056}
+  lobbyListUI: {fileID: 1685175534}
 --- !u!1 &1375656868
 GameObject:
   m_ObjectHideFlags: 0
@@ -5316,19 +5270,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1556341908}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1620660374}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1556341908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5665,6 +5607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb8c67190f175734f94274ee26e520da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerListUI: {fileID: 1620660379}
   inputNameLobbyText: {fileID: 699658526}
   protectionLobbyText: {fileID: 1075994731}
   numPlayerText: {fileID: 1953910065}
@@ -5979,7 +5922,7 @@ MonoBehaviour:
   playerListContainer: {fileID: 2017240424}
   playerPanelPrefab: {fileID: 6175250784103807644, guid: 915d4a32b7987c34da64ec5b09305968,
     type: 3}
-  nameLobbyText: {fileID: 1491679917}
+  nameLobbyText: {fileID: 888644194}
   numPlayersLobbyText: {fileID: 246961970}
 --- !u!1 &1621753479
 GameObject:
@@ -6235,19 +6178,7 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1800510092}
-        m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
-        m_MethodName: SetPlayerName
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6556,6 +6487,7 @@ MonoBehaviour:
   lobbyListContainer: {fileID: 1577481049}
   lobbyPanelPrefab: {fileID: 2743810261998603162, guid: 94c7fda87d4a23c40b915f5a82533c05,
     type: 3}
+  playerListUI: {fileID: 1620660379}
   refreshLobbyListButton: {fileID: 225871258}
   exitLobbyListButton: {fileID: 1666870094}
 --- !u!1 &1768695171
@@ -6743,6 +6675,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f5ab6a0d3eb9a549af61e2f24b52d94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  heartbeatTimer: 20
+  lobbyPollTimer: 1.1
 --- !u!4 &1800510093
 Transform:
   m_ObjectHideFlags: 0
@@ -7598,43 +7532,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2045279934}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1583749051}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1371385395}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1583749056}
-        m_TargetAssemblyTypeName: CreateLobbyUI, Assembly-CSharp
-        m_MethodName: ResetLobbyUIData
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2045279934
 MonoBehaviour:
   m_ObjectHideFlags: 0

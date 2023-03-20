@@ -29,15 +29,10 @@ public class LobbyController : MonoBehaviour
     private Lobby joinedLobby;
     private string playerName;
 
-    private float heartbeatTimer;
-    private float lobbyPollTimer;
-    private float refreshLobbyListTimer;
+    [SerializeField] private float heartbeatTimer;
+    [SerializeField] private float lobbyPollTimer;
 
 
-
-    /// <summary>
-    /// ////////////////////////////////////////////////////////
-    /// </summary>
     public event EventHandler OnLeftLobby;
 
     public event EventHandler<LobbyEventArgs> OnJoinedLobby;
@@ -117,6 +112,7 @@ public class LobbyController : MonoBehaviour
 
             //print players
             OnJoinedLobbyUpdate?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
+            Debug.Log("Hola?");
 
             if (!IsPlayerInLobby())
             {
@@ -134,9 +130,8 @@ public class LobbyController : MonoBehaviour
                 if(!IsLobbyHost()) //host se unio al relay asique no tener en cuenta a este 
                 {
                     RelayController.Instance.JoinRelay(joinedLobby.Data[KEY_RELAY].Value);
+                    joinedLobby = null;
                 }
-
-                joinedLobby = null;
                 //Invocaar comienzo juego
             }
         }
