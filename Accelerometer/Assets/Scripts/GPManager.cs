@@ -12,30 +12,31 @@ public class GPManager : MonoBehaviour
     public TextMeshProUGUI statusText;
 
     [SerializeField] Button hostBtn;
-    [SerializeField] Button serverBtn;
     [SerializeField] Button clientBtn;
+
+
 
     private void Awake()
     {
-        serverBtn.onClick.AddListener(() =>
-        {
-            NetworkManager.Singleton.StartServer();
-        });
-
+        InitGame();
         hostBtn.onClick.AddListener(() =>
         {
-            NetworkManager.Singleton.StartHost();
+            RelayController.Instance.StartHostClient();
         });
 
         clientBtn.onClick.AddListener(() =>
         {
-            NetworkManager.Singleton.StartClient();
+            RelayController.Instance.StartHostClient();
         });
     }
 
     public void Start()
     {
         PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
+    }
+
+    public void InitGame() {
+        RelayController.Instance.StartHostClient();
     }
 
     internal void ProcessAuthentication(SignInStatus status)

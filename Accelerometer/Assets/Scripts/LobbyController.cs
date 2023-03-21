@@ -6,6 +6,7 @@ using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.Events;
 using Unity.Services.Lobbies.Models;
+using UnityEngine.SceneManagement;
 using System;
 
 public struct LobbyInfo
@@ -62,8 +63,6 @@ public class LobbyController : MonoBehaviour
     {
         InvokeRepeating("HandleLobbyHeartbeat", heartbeatTimer, heartbeatTimer);
         InvokeRepeating("HandleLobbyPoolUpdates", lobbyPollTimer, lobbyPollTimer);
-
-        OnKickedFromLobby += LobbyManager_OnKickedFromLobby;
     }
 
     #region SetterInfoLobby
@@ -72,10 +71,6 @@ public class LobbyController : MonoBehaviour
         playerName = newPlayerName;
     }
     #endregion
-
-    private void LobbyManager_OnKickedFromLobby(object sender, LobbyEventArgs e)
-    {
-    }
 
     public async void AuthenticatioMultiplayer(string playerName)
     {
@@ -112,7 +107,6 @@ public class LobbyController : MonoBehaviour
 
             //print players
             OnJoinedLobbyUpdate?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
-            Debug.Log("Hola?");
 
             if (!IsPlayerInLobby())
             {
@@ -129,7 +123,9 @@ public class LobbyController : MonoBehaviour
                 //el lobby ha comenzado a jugar
                 if(!IsLobbyHost()) //host se unio al relay asique no tener en cuenta a este 
                 {
-                    RelayController.Instance.JoinRelay(joinedLobby.Data[KEY_RELAY].Value);
+                    Debug.Log("peneee");
+                    RelayController.Instance.SetRelayCode(joinedLobby.Data[KEY_RELAY].Value, false);
+                    SceneManager.LoadScene("SampleScene");
                     joinedLobby = null;
                 }
                 //Invocaar comienzo juego
@@ -283,9 +279,10 @@ public class LobbyController : MonoBehaviour
                 {
                     Data = new Dictionary<string, DataObject>
                     {
-                        {"KeyRelay", new DataObject(DataObject.VisibilityOptions.Member, relayCode) }
+                        {KEY_RELAY, new DataObject(DataObject.VisibilityOptions.Member, relayCode) }
                     }
                 });
+                SceneManager.LoadScene("SampleScene");
             }
             catch (LobbyServiceException e)
             {

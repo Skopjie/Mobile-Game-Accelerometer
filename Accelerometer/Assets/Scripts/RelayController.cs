@@ -13,9 +13,17 @@ public class RelayController : MonoBehaviour
     public static RelayController Instance { get { return instace; } }
     private static RelayController instace;
 
+    [SerializeField] string relayCode;
+    [SerializeField] bool isHost;
+
     private void Awake()
     {
         instace = this;
+    }
+
+    public void SetRelayCode(string newRelayCode, bool newIsHost) {
+        relayCode = newRelayCode;
+        isHost = newIsHost;
     }
 
     public async Task<string> CreateRelay()
@@ -24,7 +32,8 @@ public class RelayController : MonoBehaviour
         {
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(3);
 
-            string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+            relayCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+            isHost = true;
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetHostRelayData(
                 allocation.RelayServer.IpV4,
@@ -34,8 +43,7 @@ public class RelayController : MonoBehaviour
                 allocation.ConnectionData
                 );
 
-            NetworkManager.Singleton.StartHost();
-            return joinCode;
+            return relayCode;
         }
         catch(RelayServiceException e)
         {
@@ -44,11 +52,24 @@ public class RelayController : MonoBehaviour
         }
     }
 
-    public async void JoinRelay(string joinCode)
+    public void StartHost() {
+        NetworkManager.Singleton.StartHost();
+    }
+
+    public void StartHostClient() {
+        Debug.Log("Soy host = " + isHost + " y mi id es: " + relayCode);
+        if (isHost)
+            StartHost();
+        else
+            JoinRelay();
+    }
+
+    public async void JoinRelay()
     {
         try
         {
-            JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
+            isHost = false;
+            JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(relayCode);
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetClientRelayData(
                joinAllocation.RelayServer.IpV4,
@@ -65,5 +86,9 @@ public class RelayController : MonoBehaviour
         {
             Debug.Log(e);
         }
+    }
+
+    public void StartClient() {
+        NetworkManager.Singleton.StartClient();
     }
 }
