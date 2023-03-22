@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class TableMap : MonoBehaviour
+public class TableMap : NetworkBehaviour
 {
     SquareController[,] allSquares;
 
@@ -25,13 +26,13 @@ public class TableMap : MonoBehaviour
 
     void Start()
     {
-        InitTable();
+        //InitTable();
 
         if(patronesData != null && isPlaying == true)
             StartCoroutine(NextRound(GetRandomPatron()));
     }
 
-    void InitTable()
+    public void InitTable()
     {
         allSquares = new SquareController[rows, columns];
         scaleSquarePrefab = squarePrefab.transform.GetChild(0).GetComponent<Transform>().localScale;
@@ -44,7 +45,9 @@ public class TableMap : MonoBehaviour
     void InstantiateCasilla(int fila, int columna)
     {
         Vector3 squarePosition = new Vector3(transform.position.x + (fila * scaleSquarePrefab.x), -2, transform.position.y + (columna * scaleSquarePrefab.z));
-        SquareController newSquare = Instantiate(squarePrefab, squarePosition, Quaternion.identity, transform).transform.GetChild(0).GetComponent<SquareController>();
+        Transform newSquareTransform = Instantiate(squarePrefab, squarePosition, Quaternion.identity, transform).GetComponent<Transform>();
+        newSquareTransform.GetComponent<NetworkObject>().Spawn(true);
+        SquareController newSquare = newSquareTransform.GetChild(0).GetComponent<SquareController>();
         newSquare.InitDataSquare(new Vector2(fila, columna), squarePosition);
 
         allSquares[fila, columna] = newSquare;

@@ -56,7 +56,6 @@ public class LobbyController : MonoBehaviour
     private void Awake()
     {
         instace = this;
-        DontDestroyOnLoad(this.gameObject);
     }
 
     void Start()
@@ -123,8 +122,7 @@ public class LobbyController : MonoBehaviour
                 //el lobby ha comenzado a jugar
                 if(!IsLobbyHost()) //host se unio al relay asique no tener en cuenta a este 
                 {
-                    Debug.Log("peneee");
-                    RelayController.Instance.SetRelayCode(joinedLobby.Data[KEY_RELAY].Value, false);
+                    RelayController.Instance.SetRelayData(joinedLobby.Data[KEY_RELAY].Value, playerName, false);
                     SceneManager.LoadScene("SampleScene");
                     joinedLobby = null;
                 }
@@ -168,16 +166,19 @@ public class LobbyController : MonoBehaviour
     {
         try
         {
-            QueryLobbiesOptions queryOptions = new QueryLobbiesOptions
+            QueryLobbiesOptions options = new QueryLobbiesOptions();
+            options.Count = 25;
+
+            // Filter for open lobbies only
+            options.Filters = new List<QueryFilter>()
             {
-                Count = 25,
-                Filters = new List<QueryFilter>
-                {
-                    new QueryFilter(QueryFilter.FieldOptions.AvailableSlots, "0" , QueryFilter.OpOptions.GT)
-                }
+                new QueryFilter(
+                    field: QueryFilter.FieldOptions.AvailableSlots,
+                    op: QueryFilter.OpOptions.GT,
+                    value: "0")
             };
 
-            QueryResponse query = await Lobbies.Instance.QueryLobbiesAsync();
+            QueryResponse query = await Lobbies.Instance.QueryLobbiesAsync(options);
             Debug.Log("Lobbies found: " +query.Results.Count);
 
             OnLobbyListChanged?.Invoke(this, new OnLobbyListChangedEventArgs { lobbyList = query.Results });
@@ -201,7 +202,8 @@ public class LobbyController : MonoBehaviour
             Lobby lobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobbyCode, joinLobbyCodeOptions);
             joinedLobby = lobby;
 
-            OnJoinedLobby?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
+            if(joinedLobby != null)
+                OnJoinedLobby?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
 
         }
         catch (LobbyServiceException e)
@@ -273,7 +275,7 @@ public class LobbyController : MonoBehaviour
         {
             try
             {
-                string relayCode = await RelayController.Instance.CreateRelay();
+                string relayCode = await RelayController.Instance.CreateRelay(playerName);
 
                 Lobby lobby = await Lobbies.Instance.UpdateLobbyAsync(joinedLobby.Id, new UpdateLobbyOptions
                 {

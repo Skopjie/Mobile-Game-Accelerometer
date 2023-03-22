@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class AccelerometerInput : NetworkBehaviour
 {
-    Rigidbody rgbd;
+    [Header("Componentes")]
+    [SerializeField] Rigidbody rgbd;
+    [SerializeField] PlayerDataNetwork playerData;
 
+    [Header("Variables")]
     [SerializeField] float forceSpeed;
 
     [Header("Datos Temporales")]
@@ -13,9 +16,20 @@ public class AccelerometerInput : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rgbd = GetComponent<Rigidbody>();
+        InitComponents();
 
         playerPos = transform.position;
+    }
+
+    void InitComponents() {
+        if (rgbd == null)
+            rgbd.GetComponent<Rigidbody>();
+        if (playerData == null)
+            playerData.GetComponent<PlayerDataNetwork>();
+    }
+
+    public override void OnNetworkSpawn() {
+        transform.position = playerData.GetPositionSpawn();
     }
 
     // Update is called once per frame
@@ -23,6 +37,11 @@ public class AccelerometerInput : NetworkBehaviour
     {
         if (!IsOwner) return;
         GetAccelerometer();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void SetPositionServerRpc() {
+        transform.position = playerData.GetPositionSpawn();
     }
 
     void GetAccelerometer()

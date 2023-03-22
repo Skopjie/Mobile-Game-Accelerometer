@@ -10,6 +10,11 @@ public class PlayerSingleGOController : MonoBehaviour
 
     public void UpdateLobbyData(Player playerData)
     {
+        gameObject.SetActive(true);
         namePlayerText.text = playerData.Data["PlayerName"].Value;
+    }
+
+    public void HidePlayerGO() {
+        gameObject.SetActive(false);
     }
 }

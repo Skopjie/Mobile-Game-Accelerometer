@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 120375795663676740}
   - component: {fileID: 120375795663676743}
+  - component: {fileID: 3015672910658839954}
   m_Layer: 0
   m_Name: Tablero
   m_TagString: Untagged
@@ -44,14 +45,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 183954f4286c1834f932358c174d39a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  casillasEliminadas: []
-  casillaPrefab: {fileID: 6441680545780717637, guid: ce36440b03cb39e4e985a3b8b8226724,
+  squaresDisable: []
+  allSquaresEnables: []
+  squarePrefab: {fileID: 6441680545780717637, guid: ce36440b03cb39e4e985a3b8b8226724,
     type: 3}
-  patronesData: []
-  filas: 8
-  columnas: 8
+  patronesData:
+  - {fileID: 11400000, guid: 618852b3924c3ed40a04e7380c29eddf, type: 2}
+  rows: 8
+  columns: 8
   timePerRound: 6
   timeBtwRound: 2
-  isPlaying: 1
-  player: {fileID: 0}
-  playerPos: {x: 0, y: 1, z: 5.34}
+  isPlaying: 0
+--- !u!114 &3015672910658839954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120375795663676741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1

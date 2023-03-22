@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 459448304068836004}
   - component: {fileID: 459448304068836003}
   - component: {fileID: 459448304068836002}
+  - component: {fileID: 2277068690494681055}
   - component: {fileID: 1892264720}
   - component: {fileID: 1462541301135181217}
   m_Layer: 0
@@ -129,8 +130,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5cbe19fe4fb1134d8bdd17a247b2e55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rgbd: {fileID: 459448304068836003}
+  playerData: {fileID: 2277068690494681055}
   forceSpeed: 35
   playerPos: {x: 0, y: 0, z: 0}
+--- !u!114 &2277068690494681055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459448304068836001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a838682b2b117744855319a6dc89c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idPlayer:
+    m_InternalValue: 5
+  positionsSpawnPlayersList:
+  - {x: -6, y: -1.1, z: 13}
+  - {x: -6, y: -1.1, z: 0}
+  - {x: 6, y: -1.1, z: 13}
+  - {x: 6, y: -1.1, z: 0}
 --- !u!114 &1892264720
 MonoBehaviour:
   m_ObjectHideFlags: 0

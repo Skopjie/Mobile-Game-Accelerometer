@@ -13,37 +13,32 @@ public class RelayController : MonoBehaviour
     public static RelayController Instance { get { return instace; } }
     private static RelayController instace;
 
-    [SerializeField] string relayCode;
-    [SerializeField] bool isHost;
+    [Header("Componentes")]
+    public LobbyPlayerRelayData relayData;
 
     private void Awake()
     {
         instace = this;
     }
 
-    public void SetRelayCode(string newRelayCode, bool newIsHost) {
-        relayCode = newRelayCode;
-        isHost = newIsHost;
+    public void SetRelayData(string newCodeRelay, string newNamePlayer, bool newIsHost) {
+        relayData.codeRelay = newCodeRelay;
+        relayData.namePlayer = newNamePlayer;
+        relayData.isHost = newIsHost;
     }
 
-    public async Task<string> CreateRelay()
+    public async Task<string> CreateRelay(string newNamePlayer)
     {
         try
         {
-            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(3);
+            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(4);
+            relayData.allocation = allocation; 
+            string newRelayCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
-            relayCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-            isHost = true;
+            SetRelayData(newRelayCode, newNamePlayer, true);
+        
 
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetHostRelayData(
-                allocation.RelayServer.IpV4,
-                (ushort)allocation.RelayServer.Port,
-                allocation.AllocationIdBytes,
-                allocation.Key,
-                allocation.ConnectionData
-                );
-
-            return relayCode;
+            return relayData.codeRelay;
         }
         catch(RelayServiceException e)
         {
@@ -52,15 +47,22 @@ public class RelayController : MonoBehaviour
         }
     }
 
-    public void StartHost() {
+    public void StartRelayHost() {
+        NetworkManager.Singleton.GetComponent<UnityTransport>().SetHostRelayData(
+            relayData.allocation.RelayServer.IpV4,
+            (ushort)relayData.allocation.RelayServer.Port,
+            relayData.allocation.AllocationIdBytes,
+            relayData.allocation.Key,
+            relayData.allocation.ConnectionData
+            );
+
         NetworkManager.Singleton.StartHost();
     }
 
-    public void StartHostClient() {
-        Debug.Log("Soy host = " + isHost + " y mi id es: " + relayCode);
-        if (isHost)
-            StartHost();
-        else
+    public void StartRelayHostClient() {
+        if (relayData.isHost)
+            StartRelayHost();
+        else 
             JoinRelay();
     }
 
@@ -68,8 +70,7 @@ public class RelayController : MonoBehaviour
     {
         try
         {
-            isHost = false;
-            JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(relayCode);
+            JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(relayData.codeRelay);
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetClientRelayData(
                joinAllocation.RelayServer.IpV4,
@@ -86,9 +87,5 @@ public class RelayController : MonoBehaviour
         {
             Debug.Log(e);
         }
-    }
-
-    public void StartClient() {
-        NetworkManager.Singleton.StartClient();
     }
 }

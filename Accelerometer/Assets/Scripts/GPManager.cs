@@ -13,30 +13,31 @@ public class GPManager : MonoBehaviour
 
     [SerializeField] Button hostBtn;
     [SerializeField] Button clientBtn;
+    [SerializeField] bool inityRelay;
 
 
 
     private void Awake()
     {
-        InitGame();
-        hostBtn.onClick.AddListener(() =>
-        {
-            RelayController.Instance.StartHostClient();
+        hostBtn.onClick.AddListener(() => {
+            NetworkManager.Singleton.StartHost();
         });
 
-        clientBtn.onClick.AddListener(() =>
-        {
-            RelayController.Instance.StartHostClient();
+        clientBtn.onClick.AddListener(() => {
+            NetworkManager.Singleton.StartClient();
         });
+
+        if(inityRelay)
+            InitGame();
     }
 
     public void Start()
     {
-        PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
+        //PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
     }
 
     public void InitGame() {
-        RelayController.Instance.StartHostClient();
+        RelayController.Instance.StartRelayHostClient();
     }
 
     internal void ProcessAuthentication(SignInStatus status)

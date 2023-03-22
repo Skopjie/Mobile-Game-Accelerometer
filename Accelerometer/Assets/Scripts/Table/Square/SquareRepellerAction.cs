@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class SquareRepellerAction : MonoBehaviour, ISquareActions
+public class SquareRepellerAction : NetworkBehaviour, ISquareActions
 {
     [Header("Componentes")]
     [SerializeField] RepellersController repellerController;

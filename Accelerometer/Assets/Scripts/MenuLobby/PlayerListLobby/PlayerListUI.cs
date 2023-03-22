@@ -13,27 +13,13 @@ public class PlayerListUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI nameLobbyText;
     [SerializeField] TextMeshProUGUI numPlayersLobbyText;
 
+    List<PlayerSingleGOController> playerLobbyList = new List<PlayerSingleGOController>();
+
     private void Start() {
-        LobbyController.Instance.OnJoinedLobby += UpdateLobbyList;
-        LobbyController.Instance.OnJoinedLobbyUpdate += UpdateLobbyList;
-    }
+        InitPlayersLobby();
 
-    public void UpdateLobbyList(object sender, LobbyController.LobbyEventArgs e) {
-        Debug.Log("Players in Lobby " + e.lobby.Name + " " + e.lobby.Data["GameMode"].Value);
-
-        SetLobbyData(e.lobby);
-
-        foreach (Transform child in playerListContainer)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (Player player in e.lobby.Players)
-        {
-            PlayerSingleGOController playerSingle = Instantiate(playerPanelPrefab, playerListContainer).GetComponent<PlayerSingleGOController>();
-            playerSingle.UpdateLobbyData(player);
-            Debug.Log(player.Id + " / " + player.Data["PlayerName"].Value);
-        }
+        LobbyController.Instance.OnJoinedLobby += UpdatePlayerList;
+        LobbyController.Instance.OnJoinedLobbyUpdate += UpdatePlayerList;
     }
 
     public void SetLobbyData(Lobby lobby)
@@ -41,6 +27,31 @@ public class PlayerListUI : MonoBehaviour
         nameLobbyText.text = lobby.Name;
         numPlayersLobbyText.text = lobby.Players.Count+"/"+lobby.MaxPlayers;
     }
+
+    void InitPlayersLobby() {
+        for (int i = 0; i < 4; i++) {
+            GameObject playerLobbySingleGO = Instantiate(playerPanelPrefab, playerListContainer);
+            PlayerSingleGOController playerSingleController = playerLobbySingleGO.GetComponent<PlayerSingleGOController>();
+            playerLobbyList.Add(playerSingleController);
+            playerSingleController.HidePlayerGO();
+        }
+    }
+
+    public void UpdatePlayerList(object sender, LobbyController.LobbyEventArgs e) {
+        HideAllPlayerLobbyList();
+        SetLobbyData(e.lobby);
+        Debug.Log("Players in Lobby " + e.lobby.Name + " " + e.lobby.Data["GameMode"].Value);
+        for (int i = 0; i < e.lobby.Players.Count; i++) {
+            playerLobbyList[i].UpdateLobbyData(e.lobby.Players[i]);
+        }
+    }
+
+    public void HideAllPlayerLobbyList() {
+        foreach (PlayerSingleGOController playerLobbySingleController in playerLobbyList) {
+            playerLobbySingleController.HidePlayerGO();
+        }
+    }
+
 
     public void ExitLobby()
     {

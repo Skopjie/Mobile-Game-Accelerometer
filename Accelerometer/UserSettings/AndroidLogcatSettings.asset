@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "RF8MB08E4YK",
         "name": "com.CarpetGames.Accelerometer",
-        "processId": 4995,
+        "processId": 8439,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -60,6 +60,18 @@
             "deviceId": "RF8MB08E4YK",
             "name": "com.CarpetGames.Accelerometer",
             "processId": 4995,
+            "exited": false
+        },
+        {
+            "deviceId": "RF8MB08E4YK",
+            "name": "com.CarpetGames.Accelerometer",
+            "processId": 3571,
+            "exited": false
+        },
+        {
+            "deviceId": "RF8MB08E4YK",
+            "name": "com.CarpetGames.Accelerometer",
+            "processId": 8439,
             "exited": false
         }
     ],
