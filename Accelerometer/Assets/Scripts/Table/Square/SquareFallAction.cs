@@ -29,7 +29,7 @@ public class SquareFallAction : MonoBehaviour, ISquareActions
     {
         squareController.rgbd.isKinematic = true;
         squareController.rgbd.useGravity = false;
-        gameObject.transform.position = squareController.squareInitialPosition;
+        gameObject.transform.position = squareController.squareInitialPosition.Value;
         squareController.SetNewMaterial(dataProject.normalSquareMaterial);
     }
 

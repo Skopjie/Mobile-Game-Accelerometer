@@ -30,6 +30,7 @@ public class AccelerometerInput : NetworkBehaviour
 
     public override void OnNetworkSpawn() {
         transform.position = playerData.GetPositionSpawn();
+        TableMap.Instance.AddNewPlayerServerRpc();
     }
 
     // Update is called once per frame

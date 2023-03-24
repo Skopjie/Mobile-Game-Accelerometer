@@ -146,8 +146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a838682b2b117744855319a6dc89c34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idPlayer:
-    m_InternalValue: 5
+  _idPlayer: 0
+  _namePlayer: 
   positionsSpawnPlayersList:
   - {x: -6, y: -1.1, z: 13}
   - {x: -6, y: -1.1, z: 0}

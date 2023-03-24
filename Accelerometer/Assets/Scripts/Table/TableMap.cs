@@ -24,18 +24,39 @@ public class TableMap : NetworkBehaviour
 
     Vector3 scaleSquarePrefab;
 
+    public NetworkVariable<int> numberPlayer =
+    new NetworkVariable<int>(0,
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Owner);
+
+    public static TableMap Instance { get { return instace; } }
+    private static TableMap instace;
+
     void Start()
     {
         //InitTable();
+        instace = this;
 
-        if(patronesData != null && isPlaying == true)
+        if (patronesData != null && isPlaying == true)
             StartCoroutine(NextRound(GetRandomPatron()));
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void AddNewPlayerServerRpc() {
+        numberPlayer.Value++;
+        Debug.Log(numberPlayer.Value);
+        if (numberPlayer.Value == 1)
+            StartRoundGameInvoke();
+    }
+
+    public void StartRoundGameInvoke() {
+        StartCoroutine(NextRound(GetRandomPatron()));
     }
 
     public void InitTable()
     {
         allSquares = new SquareController[rows, columns];
-        scaleSquarePrefab = squarePrefab.transform.GetChild(0).GetComponent<Transform>().localScale;
+        scaleSquarePrefab = squarePrefab.transform.GetComponent<Transform>().localScale;
 
         for(int i = 0; i<rows; i++)
             for (int j = 0; j < columns; j++)
@@ -47,22 +68,37 @@ public class TableMap : NetworkBehaviour
         Vector3 squarePosition = new Vector3(transform.position.x + (fila * scaleSquarePrefab.x), -2, transform.position.y + (columna * scaleSquarePrefab.z));
         Transform newSquareTransform = Instantiate(squarePrefab, squarePosition, Quaternion.identity, transform).GetComponent<Transform>();
         newSquareTransform.GetComponent<NetworkObject>().Spawn(true);
-        SquareController newSquare = newSquareTransform.GetChild(0).GetComponent<SquareController>();
+        newSquareTransform.parent = transform;
+        SquareController newSquare = newSquareTransform.GetComponent<SquareController>();
         newSquare.InitDataSquare(new Vector2(fila, columna), squarePosition);
 
         allSquares[fila, columna] = newSquare;
         allSquaresEnables.Add(newSquare);
     }
 
+    public void AddQuareListCount() {
+        Invoke("AddSquareToData", 1);
+    }
 
+    public void AddSquareToData() {
+        allSquares = new SquareController[rows, columns];
+        int childrenTableCount = transform.childCount;
+        for(int i = 0; i<childrenTableCount;i++) {
+            SquareController newSquare = transform.GetChild(i).GetComponent<SquareController>();
+            Vector2 newIdSquare = newSquare.GetIdSquare();
+            allSquares[(int)newIdSquare.x, (int)newIdSquare.y] = newSquare;
+            allSquaresEnables.Add(newSquare);
+        }
+    }
 
     IEnumerator NextRound(PatronCasillasData patronData)
     {
+        Debug.Log(patronData.namePatron);
         yield return new WaitForSeconds(timeBtwRound);
-        BuildPatronMap(patronData);
+        BuildPatronMapClientRpc(patronData);
 
         yield return new WaitForSeconds(timePerRound);
-        ReturnMapNormal();
+        ReturnMapNormalClientRpc();
         StartCoroutine(NextRound(GetRandomPatron()));
     }
 
@@ -73,18 +109,19 @@ public class TableMap : NetworkBehaviour
     }
 
 
-
-    public void BuildPatronMap(PatronCasillasData patron)
+    [ClientRpc]
+    public void BuildPatronMapClientRpc(PatronCasillasData patron)
     {
-        SetSquareListType(patron.squareFallList, TypeSquare.fall);
-        SetSquareListType(patron.squareRebotadorList, TypeSquare.rebotador);
-        SetSquareListType(patron.squaresRepellerList, TypeSquare.repellers);
-        SetSquareListType(patron.squaresAttractorList, TypeSquare.attractor);
+        //patron.InitArrayData();
+        SetSquareListType(patron.squareFallArray, TypeSquare.fall);
+        SetSquareListType(patron.squareRebotadorArray, TypeSquare.rebotador);
+        SetSquareListType(patron.squaresRepellerArray, TypeSquare.repellers);
+        SetSquareListType(patron.squaresAttractorArray, TypeSquare.attractor);
     }
 
-    void SetSquareListType(List<Vector2Int> squareList, TypeSquare typeSquare)
+    void SetSquareListType(Vector2Int[] squareArray, TypeSquare typeSquare)
     {
-        foreach (Vector2Int id in squareList)
+        foreach (Vector2Int id in squareArray)
             SetSquareType(id, typeSquare);
     }
 
@@ -97,7 +134,8 @@ public class TableMap : NetworkBehaviour
         allSquaresEnables.Remove(casillaSeleccionada);
     }
 
-    public void ReturnMapNormal()
+    [ClientRpc]
+    public void ReturnMapNormalClientRpc()
     {
         foreach (SquareController casilla in squaresDisable)
         {

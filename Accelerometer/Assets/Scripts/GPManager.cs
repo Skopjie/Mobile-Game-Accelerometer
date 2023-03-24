@@ -6,8 +6,8 @@ using UnityEngine.SocialPlatforms;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 
-public class GPManager : MonoBehaviour
-{
+public class GPManager : NetworkBehaviour {
+
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI statusText;
 
@@ -15,7 +15,7 @@ public class GPManager : MonoBehaviour
     [SerializeField] Button clientBtn;
     [SerializeField] bool inityRelay;
 
-
+    int numberPlayer;
 
     private void Awake()
     {
@@ -33,8 +33,9 @@ public class GPManager : MonoBehaviour
 
     public void Start()
     {
-        //PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
+
     }
+
 
     public void InitGame() {
         RelayController.Instance.StartRelayHostClient();

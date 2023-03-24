@@ -1,11 +1,19 @@
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
-public class SquareController : MonoBehaviour
-{
+public class SquareController : NetworkBehaviour {
     [Header("Datos Importantes")]
-    [SerializeField]Vector2 idSquare;
-    public Vector3 squareInitialPosition;
+    public NetworkVariable<Vector2> idSquare =
+    new NetworkVariable<Vector2>(new Vector2(0,0),
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Owner);
+
+    public NetworkVariable<Vector3> squareInitialPosition =
+    new NetworkVariable<Vector3>(new Vector3(0, 0,0),
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Owner);
+
     [SerializeField] ISquareActions squareActions;
 
     [SerializeField]float timeToChangeTypeSquare;
@@ -29,10 +37,19 @@ public class SquareController : MonoBehaviour
             rgbd = gameObject.GetComponent<Rigidbody>();
     }
 
+    public Vector2 GetIdSquare() {
+        return idSquare.Value;
+    }
+    public void SetPositionSquare(Vector3 newSquareInitialPosition) {
+        squareInitialPosition.Value = newSquareInitialPosition;
+    }
     public void InitDataSquare(Vector2 newId, Vector3 newSquareInitialPosition)
     {
-        idSquare = newId;
-        squareInitialPosition = newSquareInitialPosition;
+        idSquare.Value = newId;
+        squareInitialPosition.Value = newSquareInitialPosition;
+    }
+    public void InitIdSquare(Vector2 newId) {
+        idSquare.Value = newId;
     }
 
 
