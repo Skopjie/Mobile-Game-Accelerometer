@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class LobbyListUI : MonoBehaviour
 {
+    public static LobbyListUI Instance { get { return instace; } }
+    private static LobbyListUI instace;
+
+
     [Header("Componentes")]
     [SerializeField] Transform lobbyListContainer;
     [SerializeField] GameObject lobbyPanelPrefab;
@@ -28,6 +32,7 @@ public class LobbyListUI : MonoBehaviour
     }
 
     private void Start() {
+        instace = this;
         InitLobbyList();
 
         LobbyController.Instance.OnLobbyListChanged += UpdateLobbyList;

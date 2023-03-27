@@ -41,12 +41,23 @@ public class TableMap : NetworkBehaviour
             StartCoroutine(NextRound(GetRandomPatron()));
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void AddNewPlayerServerRpc() {
+    public void AddNewPlayer() {
         numberPlayer.Value++;
         Debug.Log(numberPlayer.Value);
-        if (numberPlayer.Value == 1)
-            StartRoundGameInvoke();
+
+        if (IsHost)
+            InitTable();
+        else
+            AddSquareToData();
+        if (numberPlayer.Value == 2) {
+            StartGame();
+            if(IsHost)
+                StartRoundGameInvoke();
+        }
+    }
+
+    public void StartGame() {
+        Debug.Log("hola");
     }
 
     public void StartRoundGameInvoke() {

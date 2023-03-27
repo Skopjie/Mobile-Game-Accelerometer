@@ -17,6 +17,8 @@ public class AccelerometerInput : NetworkBehaviour
     void Start()
     {
         InitComponents();
+        if(IsOwner)
+        TableMap.Instance.AddNewPlayer();
 
         playerPos = transform.position;
     }
@@ -29,8 +31,6 @@ public class AccelerometerInput : NetworkBehaviour
     }
 
     public override void OnNetworkSpawn() {
-        transform.position = playerData.GetPositionSpawn();
-        TableMap.Instance.AddNewPlayerServerRpc();
     }
 
     // Update is called once per frame

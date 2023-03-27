@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 120375795663676740}
   - component: {fileID: 120375795663676743}
-  - component: {fileID: 3015672910658839954}
+  - component: {fileID: 1557274607}
   m_Layer: 0
   m_Name: Tablero
   m_TagString: Untagged
@@ -56,7 +56,9 @@ MonoBehaviour:
   timePerRound: 6
   timeBtwRound: 2
   isPlaying: 0
---- !u!114 &3015672910658839954
+  numberPlayer:
+    m_InternalValue: 0
+--- !u!114 &1557274607
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -27,13 +27,12 @@ public class GPManager : NetworkBehaviour {
             NetworkManager.Singleton.StartClient();
         });
 
-        if(inityRelay)
+        if (inityRelay)
             InitGame();
     }
 
     public void Start()
     {
-
     }
 
 

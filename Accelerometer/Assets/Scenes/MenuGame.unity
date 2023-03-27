@@ -2076,7 +2076,13 @@ MonoBehaviour:
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}
     - Override: 0
-      Prefab: {fileID: 6441680545780717637, guid: ce36440b03cb39e4e985a3b8b8226724,
+      Prefab: {fileID: 4483842232525599319, guid: 64a917a9d63da7a4887250b1a9b1b0e8,
+        type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 120375795663676741, guid: ec9e2eda67b744043b29688dd6f475d2,
         type: 3}
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 0
@@ -3698,7 +3704,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &986828745
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6299,6 +6305,7 @@ MonoBehaviour:
   playerListContainer: {fileID: 2017240424}
   playerPanelPrefab: {fileID: 6175250784103807644, guid: 915d4a32b7987c34da64ec5b09305968,
     type: 3}
+  startGameButton: {fileID: 986828744}
   nameLobbyText: {fileID: 888644194}
   numPlayersLobbyText: {fileID: 246961970}
 --- !u!1 &1621753479
@@ -8181,18 +8188,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1620660374}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1685175529}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -8208,6 +8203,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1800510092}
         m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
         m_MethodName: LeaveLobby
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1620660379}
+        m_TargetAssemblyTypeName: PlayerListUI, Assembly-CSharp
+        m_MethodName: HideCanvas
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
