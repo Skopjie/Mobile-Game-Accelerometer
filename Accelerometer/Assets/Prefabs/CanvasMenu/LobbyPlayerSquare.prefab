@@ -290,6 +290,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   namePlayerText: {fileID: 4027219253854972516}
   kickButton: {fileID: 6177598112585815492}
+  kickPlayerButton: {fileID: 1025938273907621803}
 --- !u!1 &6177598112585815492
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,19 +412,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 688114565109446453}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5177205775656212005}
-        m_TargetAssemblyTypeName: PlayerSingleGOController, Assembly-CSharp
-        m_MethodName: KickPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &6395807369763381000
 GameObject:
   m_ObjectHideFlags: 0

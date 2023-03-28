@@ -19,8 +19,7 @@ public class ConnectMultiplayerUI : MonoBehaviour
         connectMultiplayerButton.onClick.AddListener(() => {
             SetPlayerName();
             LobbyController.Instance.AuthenticatioMultiplayer(namePlayer);
-            HideCanvas();
-            multiplayerUI.ShowCanvas();
+            LobbyUIController.Instance.ShowMultiplayerOptions();
         });
     }
 
@@ -31,4 +30,8 @@ public class ConnectMultiplayerUI : MonoBehaviour
     public void HideCanvas() {
         gameObject.SetActive(false);
     }
+    public void ShowCanvas() {
+        gameObject.SetActive(true);
+    }
+
 }

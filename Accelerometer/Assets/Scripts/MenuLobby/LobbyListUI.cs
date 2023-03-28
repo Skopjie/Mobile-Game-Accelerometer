@@ -69,9 +69,4 @@ public class LobbyListUI : MonoBehaviour
         gameObject.SetActive(true);
         LobbyController.Instance.ListLobbies();
     }
-
-    public void JoinLobby() {
-        HideCanvas();
-        playerListUI.ShowCanvas();
-    }
 }

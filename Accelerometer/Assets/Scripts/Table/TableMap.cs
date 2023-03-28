@@ -52,7 +52,7 @@ public class TableMap : NetworkBehaviour
 
         if (numberPlayer.Value == 1) {
             StartGame();
-            Invoke("StartRoundGameInvoke", 1);
+            Invoke("StartRoundGameInvoke", 2);
         }
     }
 
@@ -62,6 +62,7 @@ public class TableMap : NetworkBehaviour
 
     public void StartRoundGameInvoke() {
         StartCoroutine(NextRound(GetRandomPatron()));
+        LobbyController.Instance.DeleteLobby();
     }
 
     public void InitTable()

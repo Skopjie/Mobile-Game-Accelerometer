@@ -46,6 +46,6 @@ public class LobbyGOController : MonoBehaviour
     public void JoinLobby() {
         Debug.Log("Conectandose al lobby: " + idLobby);
         LobbyController.Instance.JoinLobbyByCode(idLobby);
-        lobbyListUI.JoinLobby();
+        LobbyUIController.Instance.ShowPlayerList();
     }
 }

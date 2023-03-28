@@ -335,6 +335,16 @@ public class LobbyController : MonoBehaviour
         }
     }*/
 
+    public async void DeleteLobby() {
+        try {
+            await LobbyService.Instance.DeleteLobbyAsync(joinedLobby.Id);
+            joinedLobby = null;
+        } catch (LobbyServiceException e) {
+            Debug.Log(e);
+        }
+
+    }
+
     private Player GetPlayer()
     {
         return new Player(AuthenticationService.Instance.PlayerId, null, new Dictionary<string, PlayerDataObject> {

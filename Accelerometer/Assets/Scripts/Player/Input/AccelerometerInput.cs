@@ -38,6 +38,14 @@ public class AccelerometerInput : NetworkBehaviour
         }*/
     }
 
+    private void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("gameOver")) {
+            Debug.Log("Perdio el jugador: " + OwnerClientId);
+            gameObject.SetActive(false);
+            //Interfaz indicando jugador caido
+        }
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {

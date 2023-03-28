@@ -39,7 +39,7 @@ public class PlayerListUI : MonoBehaviour
 
         LobbyController.Instance.OnJoinedLobby += UpdatePlayerList;
         LobbyController.Instance.OnJoinedLobbyUpdate += UpdatePlayerList;
-        LobbyController.Instance.OnKickedFromLobby += HideCanvasEvent;
+        LobbyController.Instance.OnKickedFromLobby += KickPlayerEvent;
     }
 
     public void SetLobbyData(Lobby lobby)
@@ -72,6 +72,10 @@ public class PlayerListUI : MonoBehaviour
 
             playerLobbyList[i].UpdateLobbyData(e.lobby.Players[i], isKichable);
         }
+    }
+
+    public void KickPlayerEvent(object sender, LobbyController.LobbyEventArgs e) {
+        LobbyUIController.Instance.ShowLobbyList();
     }
 
     public void HideAllPlayerLobbyList() {
