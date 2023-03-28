@@ -49,10 +49,10 @@ public class TableMap : NetworkBehaviour
             InitTable();
         else
             AddSquareToData();
-        if (numberPlayer.Value == 2) {
+
+        if (numberPlayer.Value == 1) {
             StartGame();
-            if(IsHost)
-                StartRoundGameInvoke();
+            Invoke("StartRoundGameInvoke", 1);
         }
     }
 

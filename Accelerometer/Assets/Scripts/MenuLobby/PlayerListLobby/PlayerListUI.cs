@@ -17,7 +17,22 @@ public class PlayerListUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI nameLobbyText;
     [SerializeField] TextMeshProUGUI numPlayersLobbyText;
 
+    [Header("Botones")]
+    [SerializeField] Button exitLobbyButton;
+    [SerializeField] Button playGameButton;
+
     List<PlayerSingleGOController> playerLobbyList = new List<PlayerSingleGOController>();
+
+    private void Awake() {
+        exitLobbyButton.onClick.AddListener(() => {
+            LobbyController.Instance.LeaveLobby();
+            LobbyUIController.Instance.ShowLobbyList();
+        });
+
+        playGameButton.onClick.AddListener(() => {
+            LobbyController.Instance.StartGame();
+        });
+    }
 
     private void Start() {
         InitPlayersLobby();

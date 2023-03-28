@@ -16,13 +16,11 @@ public class MultiplayerUI: MonoBehaviour
 
     private void Awake() {
         createLobbyButton.onClick.AddListener(() => {
-            HideCanvas();
-            createLobbyUI.ShowCanvas();
+            LobbyUIController.Instance.ShowCreateLobby();
         });
 
         joinPublicButton.onClick.AddListener(() => {
-            HideCanvas();
-            lobbyListUI.ShowCanvas();
+            LobbyUIController.Instance.ShowLobbyList();
         });
 
         joinPrivateButton.onClick.AddListener(() => {

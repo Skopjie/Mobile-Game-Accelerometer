@@ -13,32 +13,26 @@ public class GPManager : NetworkBehaviour {
 
     [SerializeField] Button hostBtn;
     [SerializeField] Button clientBtn;
-    [SerializeField] bool inityRelay;
 
     int numberPlayer;
 
     private void Awake()
     {
-        hostBtn.onClick.AddListener(() => {
-            NetworkManager.Singleton.StartHost();
-        });
+        if(hostBtn != null )
+            hostBtn.onClick.AddListener(() => {
+                NetworkManager.Singleton.StartHost();
+            });
 
-        clientBtn.onClick.AddListener(() => {
-            NetworkManager.Singleton.StartClient();
-        });
-
-        if (inityRelay)
-            InitGame();
+        if (clientBtn != null)
+            clientBtn.onClick.AddListener(() => {
+                NetworkManager.Singleton.StartClient();
+            });
     }
 
     public void Start()
     {
     }
 
-
-    public void InitGame() {
-        RelayController.Instance.StartRelayHostClient();
-    }
 
     internal void ProcessAuthentication(SignInStatus status)
     {

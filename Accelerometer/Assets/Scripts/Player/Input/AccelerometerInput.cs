@@ -16,6 +16,8 @@ public class AccelerometerInput : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (IsOwner && IsClient)
+            TableMap.Instance.AddSquareToData();
         InitComponents();
         if(IsOwner)
         TableMap.Instance.AddNewPlayer();
@@ -31,6 +33,9 @@ public class AccelerometerInput : NetworkBehaviour
     }
 
     public override void OnNetworkSpawn() {
+        /*if(IsClient) {
+            TableMap.Instance.AddSquareToData();
+        }*/
     }
 
     // Update is called once per frame

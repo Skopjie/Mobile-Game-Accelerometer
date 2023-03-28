@@ -123,7 +123,7 @@ public class LobbyController : MonoBehaviour
                 if(!IsLobbyHost()) //host se unio al relay asique no tener en cuenta a este 
                 {
                     RelayController.Instance.SetRelayData(joinedLobby.Data[KEY_RELAY].Value, playerName, false);
-                    SceneManager.LoadScene("SampleScene");
+                    RelayController.Instance.JoinRelay();
                     joinedLobby = null;
                 }
                 //Invocaar comienzo juego
@@ -284,7 +284,6 @@ public class LobbyController : MonoBehaviour
                         {KEY_RELAY, new DataObject(DataObject.VisibilityOptions.Member, relayCode) }
                     }
                 });
-                SceneManager.LoadScene("SampleScene");
             }
             catch (LobbyServiceException e)
             {

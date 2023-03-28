@@ -23,8 +23,6 @@ public class CreateLobbyUI : MonoBehaviour
     [SerializeField] Button protectionLobbyButton;
     [SerializeField] Button maxPlayersLobbyButton;
 
-    [SerializeField] LobbyController lobbyControl;
-
     LobbyInfo lobbyInfo;
 
     private void Awake() {
@@ -33,12 +31,11 @@ public class CreateLobbyUI : MonoBehaviour
         createLobbyButton.onClick.AddListener(() => {
             Debug.Log(lobbyInfo.nameLobby + " / " + lobbyInfo.numPlayer + " / " + lobbyInfo.IsPrivate);
             LobbyController.Instance.CreateLobby(lobbyInfo);
-            HideCanvas();
-            playerListUI.ShowCanvas();
+            LobbyUIController.Instance.ShowPlayerList();
         });
 
         exitCreateLobbyButton.onClick.AddListener(() => {
-            HideCanvas();
+            LobbyUIController.Instance.ShowMultiplayerOptions();
         });
 
         inputNameLobbyText.onValueChanged.AddListener((string newValue) => {

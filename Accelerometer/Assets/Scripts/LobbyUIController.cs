@@ -1,0 +1,109 @@
+using Cinemachine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public enum LobbyState {
+
+}
+
+public class LobbyUIController : MonoBehaviour
+{
+    public static LobbyUIController Instance { get { return instace; } }
+    private static LobbyUIController instace;
+
+    public LobbyState lobbyState;
+
+    [Header("Componentes")]
+    [SerializeField] ConnectMultiplayerUI connectMultiplayerUI;
+    [SerializeField] MultiplayerUI multiplayerUI;
+    [SerializeField] CreateLobbyUI createLobbyUI;
+    [SerializeField] LobbyListUI lobbyListUI;
+    [SerializeField] PlayerListUI playerListUI;
+
+    [Header("Camaras")]
+    [SerializeField] CinemachineVirtualCamera connectMultiplayerCamera;
+    [SerializeField] CinemachineVirtualCamera createLobbyCamera;
+    [SerializeField] CinemachineVirtualCamera lobbyListCamera;
+    [SerializeField] CinemachineVirtualCamera playerListCamera;
+    [SerializeField] CinemachineVirtualCamera gameCamera;
+
+    private void Awake() {
+        instace = this;
+    }
+    public void HideAllCanvas() {
+        connectMultiplayerUI.HideCanvas();
+        multiplayerUI.HideCanvas();
+        createLobbyUI.HideCanvas();
+        lobbyListUI.HideCanvas();
+        playerListUI.HideCanvas();
+    }
+
+    public void DisableCameras() {
+        connectMultiplayerCamera.Priority = 0;
+        createLobbyCamera.Priority = 0;
+        lobbyListCamera.Priority = 0;
+        playerListCamera.Priority = 0;
+    }
+
+    /*public void ShowLobbyList() {
+        //Oculta anterior canvas
+        //mueve camara o transicion
+        //esperar a transicion
+        //muestra nuevo canvas y hace la inicializacion correspondiente
+        lobbyListUI.ShowCanvas();
+    }*/
+    public void ShowMultiplayerOptions() {
+        //Oculta anterior canvas
+        connectMultiplayerUI.HideCanvas();
+        createLobbyUI.HideCanvas();
+        lobbyListUI.HideCanvas();
+        //mueve camara o transicion
+        DisableCameras();
+        connectMultiplayerCamera.Priority = 10;
+        //esperar a transicion
+        //muestra nuevo canvas y hace la inicializacion correspondiente
+        multiplayerUI.ShowCanvas();
+    }
+
+    public void ShowLobbyList() {
+        //Oculta anterior canvas
+        playerListUI.HideCanvas();
+        multiplayerUI.HideCanvas();
+        //mueve camara o transicion
+        DisableCameras();
+        lobbyListCamera.Priority = 10;
+        //esperar a transicion
+        //muestra nuevo canvas y hace la inicializacion correspondiente
+        lobbyListUI.ShowCanvas();
+    }
+
+    public void ShowCreateLobby() {
+        //Oculta anterior canvas
+        multiplayerUI.HideCanvas();
+        //mueve camara o transicion
+        DisableCameras();
+        createLobbyCamera.Priority = 10;
+        //esperar a transicion
+        //muestra nuevo canvas y hace la inicializacion correspondiente
+        createLobbyUI.ShowCanvas();
+    }
+
+    public void ShowPlayerList() {
+        //Oculta anterior canvas
+        createLobbyUI.HideCanvas();
+        lobbyListUI.HideCanvas();
+        //mueve camara o transicion
+        DisableCameras();
+        playerListCamera.Priority = 10;
+        //esperar a transicion
+        //muestra nuevo canvas y hace la inicializacion correspondiente
+        playerListUI.ShowCanvas();
+    }
+
+    public void StartGameCamera() {
+        HideAllCanvas();
+        DisableCameras();
+        gameCamera.Priority = 10;
+    }
+}

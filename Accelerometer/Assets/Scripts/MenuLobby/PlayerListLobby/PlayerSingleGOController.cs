@@ -26,5 +26,6 @@ public class PlayerSingleGOController : MonoBehaviour
 
     public void HidePlayerGO() {
         gameObject.SetActive(false);
+        kickButton.SetActive(false);
     }
 }

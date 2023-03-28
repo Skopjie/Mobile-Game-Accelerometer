@@ -27,7 +27,7 @@ public class LobbyListUI : MonoBehaviour
         });
 
         exitLobbyListButton.onClick.AddListener(() => {
-            HideCanvas();
+            LobbyUIController.Instance.ShowMultiplayerOptions();
         });
     }
 
