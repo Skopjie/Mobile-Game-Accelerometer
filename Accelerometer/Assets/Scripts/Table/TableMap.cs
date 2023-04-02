@@ -23,17 +23,14 @@ public class TableMap : NetworkBehaviour
     [SerializeField] bool isPlaying = false;
 
     Vector3 scaleSquarePrefab;
-
-    public NetworkVariable<int> numberPlayer =
-    new NetworkVariable<int>(0,
-        NetworkVariableReadPermission.Everyone,
-        NetworkVariableWritePermission.Owner);
+    IEnumerator roundGame;
 
     public static TableMap Instance { get { return instace; } }
     private static TableMap instace;
 
     void Start()
     {
+        roundGame = NextRound(GetRandomPatron());
         //InitTable();
         instace = this;
 
@@ -41,23 +38,8 @@ public class TableMap : NetworkBehaviour
             StartCoroutine(NextRound(GetRandomPatron()));
     }
 
-    public void AddNewPlayer() {
-        numberPlayer.Value++;
-        Debug.Log(numberPlayer.Value);
-
-        if (IsHost)
-            InitTable();
-        else
-            AddSquareToData();
-
-        if (numberPlayer.Value == 1) {
-            StartGame();
-            Invoke("StartRoundGameInvoke", 2);
-        }
-    }
-
-    public void StartGame() {
-        Debug.Log("hola");
+    private void Update() {
+        
     }
 
     public void StartRoundGameInvoke() {
@@ -112,6 +94,11 @@ public class TableMap : NetworkBehaviour
         yield return new WaitForSeconds(timePerRound);
         ReturnMapNormalClientRpc();
         StartCoroutine(NextRound(GetRandomPatron()));
+    }
+
+    public void StopGame() {
+        StopCoroutine(roundGame);
+        ReturnMapNormalClientRpc();
     }
 
     PatronCasillasData GetRandomPatron()

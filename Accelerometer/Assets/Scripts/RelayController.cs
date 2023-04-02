@@ -21,13 +21,14 @@ public class RelayController : MonoBehaviour
         instace = this;
     }
 
-    public void SetRelayData(string newCodeRelay, string newNamePlayer, bool newIsHost) {
+    public void SetRelayData(string newCodeRelay, string newNamePlayer, int newNumberPlayer, bool newIsHost) {
         relayData.codeRelay = newCodeRelay;
         relayData.namePlayer = newNamePlayer;
+        relayData.numberPlayer = newNumberPlayer;
         relayData.isHost = newIsHost;
     }
 
-    public async Task<string> CreateRelay(string newNamePlayer)
+    public async Task<string> CreateRelay(string newNamePlayer, int newNumberPlayer)
     {
         try
         {
@@ -35,7 +36,7 @@ public class RelayController : MonoBehaviour
             relayData.allocation = allocation; 
             string newRelayCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
-            SetRelayData(newRelayCode, newNamePlayer, true);
+            SetRelayData(newRelayCode, newNamePlayer, newNumberPlayer, true);
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetHostRelayData(
                 relayData.allocation.RelayServer.IpV4,
@@ -46,7 +47,6 @@ public class RelayController : MonoBehaviour
                 );
 
             NetworkManager.Singleton.StartHost();
-            LobbyUIController.Instance.StartGameCamera();
 
             return relayData.codeRelay;
         }
@@ -74,7 +74,6 @@ public class RelayController : MonoBehaviour
                );
 
             NetworkManager.Singleton.StartClient();
-            LobbyUIController.Instance.StartGameCamera();
         }
         catch (RelayServiceException e)
         {

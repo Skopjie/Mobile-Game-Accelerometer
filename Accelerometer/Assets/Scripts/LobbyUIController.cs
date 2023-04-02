@@ -1,4 +1,5 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,11 +16,14 @@ public class LobbyUIController : MonoBehaviour
     public LobbyState lobbyState;
 
     [Header("Componentes")]
+    [SerializeField] MainMenuUI mainMenuUI;
     [SerializeField] ConnectMultiplayerUI connectMultiplayerUI;
     [SerializeField] MultiplayerUI multiplayerUI;
     [SerializeField] CreateLobbyUI createLobbyUI;
     [SerializeField] LobbyListUI lobbyListUI;
     [SerializeField] PlayerListUI playerListUI;
+    [SerializeField] MenuLoadingUI menuLoadingUI;
+    [SerializeField] GameCanvasUI gameCanvasUI;
 
     [Header("Camaras")]
     [SerializeField] CinemachineVirtualCamera connectMultiplayerCamera;
@@ -28,15 +32,30 @@ public class LobbyUIController : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera playerListCamera;
     [SerializeField] CinemachineVirtualCamera gameCamera;
 
+
+    public event EventHandler<LobbyUIHandler> OnStartCinematicEnds;
+
+    public class LobbyUIHandler : EventArgs {
+        public string lobby;
+    }
+
     private void Awake() {
         instace = this;
     }
+
+    private void Start() {
+        GameStateManager.Instance.OnAllPlayerConnected += StartGameCamera;
+    }
+
     public void HideAllCanvas() {
+        mainMenuUI.HideCanvas();
         connectMultiplayerUI.HideCanvas();
         multiplayerUI.HideCanvas();
         createLobbyUI.HideCanvas();
         lobbyListUI.HideCanvas();
         playerListUI.HideCanvas();
+        menuLoadingUI.HideCanvas();
+        gameCanvasUI.HideCanvas();
     }
 
     public void DisableCameras() {
@@ -101,9 +120,26 @@ public class LobbyUIController : MonoBehaviour
         playerListUI.ShowCanvas();
     }
 
+    public void ShowLoadingMenu() {
+        playerListUI.HideCanvas();
+        menuLoadingUI.ShowCanvas();
+    }
+
+    public void StartGameCamera(object sender, GameStateManager.GameStateEventArgs e) {
+        StartCoroutine(StartAnimation());
+    }
+
     public void StartGameCamera() {
+        StartCoroutine(StartAnimation());
+    }
+
+    IEnumerator StartAnimation() {
         HideAllCanvas();
+        yield return new WaitForSeconds(1);
         DisableCameras();
         gameCamera.Priority = 10;
+        yield return new WaitForSeconds(1);
+        OnStartCinematicEnds?.Invoke(this, new LobbyUIHandler { lobby = "" });
+        gameCanvasUI.ShowCanvas();
     }
 }

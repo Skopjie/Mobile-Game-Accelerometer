@@ -122,7 +122,8 @@ public class LobbyController : MonoBehaviour
                 //el lobby ha comenzado a jugar
                 if(!IsLobbyHost()) //host se unio al relay asique no tener en cuenta a este 
                 {
-                    RelayController.Instance.SetRelayData(joinedLobby.Data[KEY_RELAY].Value, playerName, false);
+                    LobbyUIController.Instance.ShowLoadingMenu();
+                    RelayController.Instance.SetRelayData(joinedLobby.Data[KEY_RELAY].Value, playerName, joinedLobby.Players.Count, false);
                     RelayController.Instance.JoinRelay();
                     joinedLobby = null;
                 }
@@ -275,7 +276,7 @@ public class LobbyController : MonoBehaviour
         {
             try
             {
-                string relayCode = await RelayController.Instance.CreateRelay(playerName);
+                string relayCode = await RelayController.Instance.CreateRelay(playerName, joinedLobby.Players.Count);
 
                 Lobby lobby = await Lobbies.Instance.UpdateLobbyAsync(joinedLobby.Id, new UpdateLobbyOptions
                 {

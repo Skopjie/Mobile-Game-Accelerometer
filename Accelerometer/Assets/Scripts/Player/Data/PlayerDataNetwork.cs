@@ -30,22 +30,24 @@ public class PlayerDataNetwork : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //SetPlayerData(RelayController.Instance.relayData);
+        SetPlayerData(RelayController.Instance.relayData);
     }
 
     public void SetPlayerData(LobbyPlayerRelayData newRelayData) {
-        playerData.Value = new PlayerData {
-            idPlayer = (int)OwnerClientId,
-            namePlayer = newRelayData.namePlayer
-        };
+        if(IsOwner) {
+            playerData.Value = new PlayerData {
+                idPlayer = (int)OwnerClientId,
+                namePlayer = newRelayData.namePlayer
+            };
 
-        _idPlayer = (int)OwnerClientId;
-        _namePlayer = newRelayData.namePlayer;
+            _idPlayer = (int)OwnerClientId;
+            _namePlayer = newRelayData.namePlayer;
+        }
     }
 
     public Vector3 GetPositionSpawn() {
-        //SetPlayerData(RelayController.Instance.relayData);
-        //return positionsSpawnPlayersList[playerData.Value.idPlayer];
-        return new Vector3(0, 2, 0);
+        SetPlayerData(RelayController.Instance.relayData);
+        return positionsSpawnPlayersList[playerData.Value.idPlayer];
+        //return new Vector3(0, 2, 0);
     }
 }

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 459448304068836003}
   - component: {fileID: 459448304068836002}
   - component: {fileID: 2277068690494681055}
+  - component: {fileID: -1623660596924544453}
   - component: {fileID: 1892264720}
   - component: {fileID: 1462541301135181217}
   m_Layer: 0
@@ -132,6 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rgbd: {fileID: 459448304068836003}
   playerData: {fileID: 2277068690494681055}
+  meshRender: {fileID: 459448304068836005}
   forceSpeed: 35
   playerPos: {x: 0, y: 0, z: 0}
 --- !u!114 &2277068690494681055
@@ -150,9 +152,21 @@ MonoBehaviour:
   _namePlayer: 
   positionsSpawnPlayersList:
   - {x: -6, y: -1.1, z: 13}
-  - {x: -6, y: -1.1, z: 0}
+  - {x: -6, y: -1.1, z: 2}
   - {x: 6, y: -1.1, z: 13}
-  - {x: 6, y: -1.1, z: 0}
+  - {x: 6, y: -1.1, z: 2}
+--- !u!114 &-1623660596924544453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459448304068836001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0c4a05b32aa49f45ba3fb1b2fa789e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1892264720
 MonoBehaviour:
   m_ObjectHideFlags: 0

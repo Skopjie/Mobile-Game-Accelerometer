@@ -16,7 +16,7 @@ public class PatronCasillasData : ScriptableObject, INetworkSerializable {
     public List<Vector2Int> squaresRepellerList;
     public List<Vector2Int> squaresAttractorList;
 
-    /*public void InitArrayData() {
+    public void InitArrayData() {
         if(squareFallList.Count > 0) {
             squareFallArray = new Vector2Int[squareFallList.Count];
             for (int fallSquare = 0; fallSquare < squareFallList.Count; fallSquare++)
@@ -40,7 +40,7 @@ public class PatronCasillasData : ScriptableObject, INetworkSerializable {
             for (int fallSquare = 0; fallSquare < squaresAttractorList.Count; fallSquare++)
                 squaresAttractorArray[fallSquare] = squaresAttractorList[fallSquare];
         }
-    }*/
+    }
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter {
         serializer.SerializeValue(ref squareFallArray);

@@ -8,5 +8,6 @@ public class LobbyPlayerRelayData : ScriptableObject {
     public Allocation allocation;
     public string codeRelay;
     public string namePlayer;
+    public int numberPlayer;
     public bool isHost;
 }

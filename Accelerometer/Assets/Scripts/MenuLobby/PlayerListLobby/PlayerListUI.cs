@@ -30,6 +30,7 @@ public class PlayerListUI : MonoBehaviour
         });
 
         playGameButton.onClick.AddListener(() => {
+            LobbyUIController.Instance.ShowLoadingMenu();
             LobbyController.Instance.StartGame();
         });
     }

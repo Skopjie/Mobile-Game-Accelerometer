@@ -441,6 +441,9 @@ public class WindowToolPatron : EditorWindow
 
         patronCasillaInfo.squareFallList = squaresFallList;
         patronCasillaInfo.squareRebotadorList = squaresRebotadorList;
+        patronCasillaInfo.squaresRepellerList = squareRepellerList;
+        patronCasillaInfo.squaresAttractorList = squareAttractorList;
+        patronCasilla.InitArrayData();
 
         //InitData();
 
