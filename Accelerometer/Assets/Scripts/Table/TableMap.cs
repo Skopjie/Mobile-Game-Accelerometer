@@ -28,18 +28,9 @@ public class TableMap : NetworkBehaviour
     public static TableMap Instance { get { return instace; } }
     private static TableMap instace;
 
-    void Start()
-    {
+    void Start() {
         roundGame = NextRound(GetRandomPatron());
-        //InitTable();
         instace = this;
-
-        if (patronesData != null && isPlaying == true)
-            StartCoroutine(NextRound(GetRandomPatron()));
-    }
-
-    private void Update() {
-        
     }
 
     public void StartRoundGameInvoke() {
@@ -47,18 +38,16 @@ public class TableMap : NetworkBehaviour
         LobbyController.Instance.DeleteLobby();
     }
 
-    public void InitTable()
-    {
+    public void InitTable() {
         allSquares = new SquareController[rows, columns];
         scaleSquarePrefab = squarePrefab.transform.GetComponent<Transform>().localScale;
 
-        for(int i = 0; i<rows; i++)
+        for (int i = 0; i < rows; i++)
             for (int j = 0; j < columns; j++)
                 InstantiateCasilla(i, j);
     }
 
-    void InstantiateCasilla(int fila, int columna)
-    {
+    void InstantiateCasilla(int fila, int columna) {
         Vector3 squarePosition = new Vector3(transform.position.x + (fila * scaleSquarePrefab.x), -2, transform.position.y + (columna * scaleSquarePrefab.z));
         Transform newSquareTransform = Instantiate(squarePrefab, squarePosition, Quaternion.identity, transform).GetComponent<Transform>();
         newSquareTransform.GetComponent<NetworkObject>().Spawn(true);
@@ -101,8 +90,13 @@ public class TableMap : NetworkBehaviour
         ReturnMapNormalClientRpc();
     }
 
-    PatronCasillasData GetRandomPatron()
-    {
+    public void DeleteAllDataTable() {
+        StopCoroutine(roundGame);
+        squaresDisable.Clear();
+        allSquaresEnables.Clear();
+    }
+
+    PatronCasillasData GetRandomPatron() {
         int randomPatron = Random.Range(0, patronesData.Count);
         return patronesData[randomPatron];
     }

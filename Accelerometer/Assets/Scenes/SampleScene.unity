@@ -1258,10 +1258,7 @@ MonoBehaviour:
     m_InternalValue: 0
   actualNumberRounds:
     m_InternalValue: 0
-  gameIsStarted: 0
-  timmerStartRound: 5
-  actualTimmerStartRound: 5
-  canvasGame: {fileID: 540960467}
+  playersNetwork: []
 --- !u!1001 &334234672
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7314,6 +7311,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4997117453108447299, guid: 3ddc3309cfe56a24f9c1d756da3f1484,
+        type: 3}
+      propertyPath: timmerStartRound
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4997117453108447299, guid: 3ddc3309cfe56a24f9c1d756da3f1484,
+        type: 3}
+      propertyPath: actualTimmerStartRound
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7036456767601444955, guid: 3ddc3309cfe56a24f9c1d756da3f1484,
         type: 3}

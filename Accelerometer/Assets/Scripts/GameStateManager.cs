@@ -29,12 +29,9 @@ public class GameStateManager : NetworkBehaviour {
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Owner);
 
-    public bool gameIsStarted = false;
 
     [Header("Variable")]
-    [SerializeField] int timmerStartRound;
-    [SerializeField] float actualTimmerStartRound;
-    [SerializeField] GameCanvasUI canvasGame;
+    public List<NetworkObject> playersNetwork = new List<NetworkObject>();
 
 
 
@@ -48,12 +45,21 @@ public class GameStateManager : NetworkBehaviour {
 
     private void Start() {
         instace = this;
-
-        LobbyUIController.Instance.OnStartCinematicEnds += cronometro;
     }
 
-    private void Update() {
-        cronometroefe();
+    void UnsubscribeAllEvnts() {
+        if (OnRoundIsOver != null)
+            foreach (var d in OnRoundIsOver.GetInvocationList())
+                OnRoundIsOver -= (d as EventHandler<GameStateEventArgs>);
+
+        if (OnAllPlayerConnected != null)
+            foreach (var d in OnAllPlayerConnected.GetInvocationList())
+                OnAllPlayerConnected -= (d as EventHandler<GameStateEventArgs>);
+        OnAllPlayerConnected += LobbyUIController.Instance.StartGameCamera;
+
+        if (OnRoundStart != null)
+            foreach (var d in OnRoundStart.GetInvocationList())
+                OnRoundStart -= (d as EventHandler<GameStateEventArgs>);
     }
 
     public void SetGameData(int newNumberPlater, int newNumberRound) {
@@ -62,24 +68,6 @@ public class GameStateManager : NetworkBehaviour {
 
         numberRounds.Value = newNumberRound;
         actualNumberRounds.Value = newNumberRound;
-    }
-
-    void cronometro(object sender, LobbyUIController.LobbyUIHandler e) {
-        canvasGame.ShowTimmer();
-        gameIsStarted = true;
-    }
-
-    void cronometroefe() {
-        if (gameIsStarted) {
-            actualTimmerStartRound -= Time.deltaTime;
-            canvasGame.SetTimmerText((int)actualTimmerStartRound);
-            if (actualTimmerStartRound <= 0) {
-                canvasGame.HideTimmer();
-                actualTimmerStartRound = timmerStartRound;
-                StartGame();
-                OnRoundStart?.Invoke(this, new GameStateEventArgs { lobby = "" });
-            }
-        }
     }
 
     [ClientRpc]
@@ -103,37 +91,51 @@ public class GameStateManager : NetworkBehaviour {
 
     [ClientRpc]
     public void CheckNumberOfPlayersClientRpc() {
-        if (actualNumberOfPlayers.Value == 1) {
-            OnRoundIsOver?.Invoke(this, new GameStateEventArgs { lobby = "" });
-
-            if(IsHost)
+        if (actualNumberOfPlayers.Value == 1 || actualNumberOfPlayers.Value == 0) {
+            if (IsHost)
                 actualNumberOfPlayers.Value = numberPlayer.Value;
-
-            Debug.Log("Fin");
             GameIsOver();
         }
     }
 
     public void StartGame() {
-        gameIsStarted = false;
+        OnRoundStart?.Invoke(this, new GameStateEventArgs { lobby = "" });
         if (IsHost)
             TableMap.Instance.StartRoundGameInvoke();
+    }
+
+    void InvokeNextRound() {
+        OnRoundIsOver?.Invoke(this, new GameStateEventArgs { lobby = "" });
     }
 
     public void GameIsOver() {
         if (IsHost)
             actualNumberRounds.Value--;
 
-        if(actualNumberRounds.Value == 0) {
-            Debug.Log("Fin del juego llevar a Lobby");
+        if (actualNumberRounds.Value > 0) {
+            InvokeNextRound();
         }
+        else if (actualNumberRounds.Value == -1) {
+            LobbyUIController.Instance.ShowMultiplayerOptions();
+            ResetDataGame();
+            ShutDownNetworkObjects();
+        }
+    }
 
-        TableMap.Instance.StopGame();
-        //Poner panel de game over
-        //sistema de rondas y numero de victorias
-        //Activar jugadores y ponerlos en el mismo lugar 
-        //reiniciar mapaW
-        //si rondas acabadas mostrar podium
-        //volver al lobby
+    public void ResetDataGame() {
+        numberPlayer.Value = 0;
+        actualNumberOfPlayers.Value = 0;
+
+        numberRounds.Value = 0;
+        actualNumberRounds.Value = 0;
+    }
+
+    public void ShutDownNetworkObjects() {
+        NetworkManager.Singleton.Shutdown();
+
+        playersNetwork.Clear();
+        TableMap.Instance.DeleteAllDataTable();
+
+        UnsubscribeAllEvnts();
     }
 }

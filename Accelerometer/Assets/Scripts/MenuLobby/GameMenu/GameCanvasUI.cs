@@ -13,22 +13,51 @@ public class GameCanvasUI : MonoBehaviour
     [SerializeField] int timmerStartRound;
     [SerializeField] float actualTimmerStartRound;
 
+    bool gameIsStarted = false;
+
+    private void Awake() {
+        LobbyUIController.Instance.OnStartCinematicEnds += StartChronometer;
+    }
+
+    private void FixedUpdate() {
+        UpdateChronometer();
+    }
+
+    void StartChronometer(object sender, LobbyUIController.LobbyUIHandler e) {
+        actualTimmerStartRound = timmerStartRound;
+        ShowTimmer();
+        gameIsStarted = true;
+    }
+
+    void UpdateChronometer() {
+        if (gameIsStarted) {
+            actualTimmerStartRound -= Time.deltaTime;
+            SetTimmerText((int)actualTimmerStartRound);
+            if (actualTimmerStartRound <= 0) {
+                HideTimmer();
+                actualTimmerStartRound = timmerStartRound;
+                gameIsStarted = false;
+                GameStateManager.Instance.StartGame();
+            }
+        }
+    }
+
     public void SetTimmerText(int newTimme) {
         timmerText.text = "" + newTimme;
     }
 
+
     public void ShowTimmer() {
         timmerText.gameObject.SetActive(true);
     }
-
     public void HideTimmer() {
         timmerText.gameObject.SetActive(false);
     }
 
+
     public void ShowCanvas() {
         gameObject.SetActive(true);
     }
-
     public void HideCanvas() {
         gameObject.SetActive(false);
     }

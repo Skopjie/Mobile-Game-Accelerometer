@@ -65,13 +65,6 @@ public class LobbyUIController : MonoBehaviour
         playerListCamera.Priority = 0;
     }
 
-    /*public void ShowLobbyList() {
-        //Oculta anterior canvas
-        //mueve camara o transicion
-        //esperar a transicion
-        //muestra nuevo canvas y hace la inicializacion correspondiente
-        lobbyListUI.ShowCanvas();
-    }*/
     public void ShowMultiplayerOptions() {
         //Oculta anterior canvas
         connectMultiplayerUI.HideCanvas();
@@ -125,10 +118,14 @@ public class LobbyUIController : MonoBehaviour
         menuLoadingUI.ShowCanvas();
     }
 
+    public void ShowChronometer() {
+        HideAllCanvas();
+        gameCanvasUI.ShowCanvas();
+    }
+
     public void StartGameCamera(object sender, GameStateManager.GameStateEventArgs e) {
         StartCoroutine(StartAnimation());
     }
-
     public void StartGameCamera() {
         StartCoroutine(StartAnimation());
     }
@@ -139,7 +136,8 @@ public class LobbyUIController : MonoBehaviour
         DisableCameras();
         gameCamera.Priority = 10;
         yield return new WaitForSeconds(1);
+        //tengo que activarlo para que se invoque evento
+        ShowChronometer();
         OnStartCinematicEnds?.Invoke(this, new LobbyUIHandler { lobby = "" });
-        gameCanvasUI.ShowCanvas();
     }
 }

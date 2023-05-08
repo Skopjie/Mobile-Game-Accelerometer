@@ -28,6 +28,7 @@ public class RelayController : MonoBehaviour
         relayData.isHost = newIsHost;
     }
 
+    //creamos una partida 
     public async Task<string> CreateRelay(string newNamePlayer, int newNumberPlayer)
     {
         try

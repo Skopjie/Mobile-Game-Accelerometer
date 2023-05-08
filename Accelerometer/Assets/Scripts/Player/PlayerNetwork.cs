@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerNetwork : NetworkBehaviour {
     void Start() {
+        GameStateManager.Instance.playersNetwork.Add(gameObject.GetComponent<NetworkObject>());
         GameStateManager.Instance.AddNewPlayerClientRpc();
 
         if(IsOwner)

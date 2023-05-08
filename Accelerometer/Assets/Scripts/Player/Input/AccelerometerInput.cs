@@ -29,13 +29,13 @@ public class AccelerometerInput : NetworkBehaviour
 
     void InitComponents() {
         if (rgbd == null)
-            rgbd.GetComponent<Rigidbody>();
+            rgbd = GetComponent<Rigidbody>();
 
         if (meshRender == null)
-            meshRender.GetComponent<MeshRenderer>();
+            meshRender = GetComponent<MeshRenderer>();
 
         if (playerData == null)
-            playerData.GetComponent<PlayerDataNetwork>();
+            playerData = GetComponent<PlayerDataNetwork>();
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -70,6 +70,7 @@ public class AccelerometerInput : NetworkBehaviour
     }
 
     void SetPosition(object sender, GameStateManager.GameStateEventArgs e) {
+        rgbd = GetComponent<Rigidbody>();
         if (IsOwner) {
             rgbd.velocity = new Vector3(0, 0, 0);
             transform.position = playerData.GetPositionSpawn();
