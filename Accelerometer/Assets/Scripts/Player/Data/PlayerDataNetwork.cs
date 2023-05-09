@@ -26,11 +26,42 @@ public class PlayerDataNetwork : NetworkBehaviour
     [SerializeField] string _namePlayer;
 
     public List<Vector3> positionsSpawnPlayersList = new List<Vector3>();
-   
-    // Start is called before the first frame update
-    void Start()
-    {
+
+    void Start() {
         SetPlayerData(RelayController.Instance.relayData);
+
+        GameStateManager.Instance.playersNetwork.Add(gameObject.GetComponent<NetworkObject>());
+        GameStateManager.Instance.AddNewPlayerClientRpc();
+
+        if (IsOwner)
+            InitializeTable();
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("gameOver")) {
+            Debug.Log("Perdio el jugador: " + OwnerClientId);
+
+            if (IsHost)
+                GameStateManager.Instance.PlayerEliminated();
+
+            Invoke("CheckFinalGame", 0.5f);
+        }
+    }
+
+    void InitializeTable() {
+        if (IsOwner && OwnerClientId == 0) {
+            Debug.Log("Creo tablero");
+            TableMap.Instance.InitTable();
+        }
+
+        else {
+            Debug.Log("Inicializo tablero");
+            TableMap.Instance.AddSquareToData();
+        }
+    }
+
+    void CheckFinalGame() {
+        GameStateManager.Instance.CheckNumberOfPlayersClientRpc();
     }
 
     public void SetPlayerData(LobbyPlayerRelayData newRelayData) {
@@ -48,6 +79,5 @@ public class PlayerDataNetwork : NetworkBehaviour
     public Vector3 GetPositionSpawn() {
         SetPlayerData(RelayController.Instance.relayData);
         return positionsSpawnPlayersList[playerData.Value.idPlayer];
-        //return new Vector3(0, 2, 0);
     }
 }

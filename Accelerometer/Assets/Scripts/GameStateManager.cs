@@ -55,7 +55,7 @@ public class GameStateManager : NetworkBehaviour {
         if (OnAllPlayerConnected != null)
             foreach (var d in OnAllPlayerConnected.GetInvocationList())
                 OnAllPlayerConnected -= (d as EventHandler<GameStateEventArgs>);
-        OnAllPlayerConnected += LobbyUIController.Instance.StartGameCamera;
+        OnAllPlayerConnected += LobbyUIController.Instance.ActiveStartGameAnimation;
 
         if (OnRoundStart != null)
             foreach (var d in OnRoundStart.GetInvocationList())
@@ -63,11 +63,14 @@ public class GameStateManager : NetworkBehaviour {
     }
 
     public void SetGameData(int newNumberPlater, int newNumberRound) {
-        numberPlayer.Value = newNumberPlater;
-        actualNumberOfPlayers.Value = newNumberPlater;
-
-        numberRounds.Value = newNumberRound;
-        actualNumberRounds.Value = newNumberRound;
+        if(newNumberPlater != 0) {
+            numberPlayer.Value = newNumberPlater;
+            actualNumberOfPlayers.Value = newNumberPlater;
+        }
+        if(newNumberRound != 0) {
+            numberRounds.Value = newNumberRound;
+            actualNumberRounds.Value = newNumberRound;
+        }
     }
 
     [ClientRpc]
@@ -82,6 +85,7 @@ public class GameStateManager : NetworkBehaviour {
     void CheckAllPlayerAreConnected() {
         if (numberPlayer.Value == RelayController.Instance.relayData.numberPlayer) {
             OnAllPlayerConnected?.Invoke(this, new GameStateEventArgs { lobby = "" });
+            SetGameData(0, 2);
         }
     }
 
@@ -106,6 +110,8 @@ public class GameStateManager : NetworkBehaviour {
 
     void InvokeNextRound() {
         OnRoundIsOver?.Invoke(this, new GameStateEventArgs { lobby = "" });
+        TableMap.Instance.StopGame();
+        LobbyUIController.Instance.StartChronometerAnimation();
     }
 
     public void GameIsOver() {
@@ -115,7 +121,7 @@ public class GameStateManager : NetworkBehaviour {
         if (actualNumberRounds.Value > 0) {
             InvokeNextRound();
         }
-        else if (actualNumberRounds.Value == -1) {
+        else if (actualNumberRounds.Value <= 0) {
             LobbyUIController.Instance.ShowMultiplayerOptions();
             ResetDataGame();
             ShutDownNetworkObjects();

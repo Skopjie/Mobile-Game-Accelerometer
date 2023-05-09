@@ -10,21 +10,18 @@ public class AccelerometerInput : NetworkBehaviour
 
     [Header("Variables")]
     [SerializeField] float forceSpeed;
-    [SerializeField] bool canMove;
 
-    [Header("Datos Temporales")]
-    [SerializeField] Vector3 playerPos;
-
-    // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         InitComponents();
 
         GameStateManager.Instance.OnRoundIsOver += SetPosition;
         GameStateManager.Instance.OnAllPlayerConnected += SetPosition;
         GameStateManager.Instance.OnRoundStart += ActiveMovement;
+    }
 
-        playerPos = transform.position;
+    void FixedUpdate() {
+        if (!IsOwner) return;
+        GetAccelerometer();
     }
 
     void InitComponents() {
@@ -36,29 +33,6 @@ public class AccelerometerInput : NetworkBehaviour
 
         if (playerData == null)
             playerData = GetComponent<PlayerDataNetwork>();
-    }
-
-    private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("gameOver")) {
-            Debug.Log("Perdio el jugador: " + OwnerClientId);
-
-            if (IsHost)
-                GameStateManager.Instance.PlayerEliminated();
-
-            Invoke("CheckFinalGame", 0.5f);
-            //Interfaz indicando jugador caido
-        }
-    }
-
-    void CheckFinalGame() {
-        GameStateManager.Instance.CheckNumberOfPlayersClientRpc();
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        if (!IsOwner) return;
-        GetAccelerometer();
     }
 
     void ActiveMovement(object sender, GameStateManager.GameStateEventArgs e) {
@@ -78,17 +52,10 @@ public class AccelerometerInput : NetworkBehaviour
         }
     }
 
-    void GetAccelerometer()
-    {
+    void GetAccelerometer() {
         Vector3 tilt = Input.acceleration * forceSpeed;
         tilt = Quaternion.Euler(90, 0, 0) * tilt;
 
         rgbd.AddForce(tilt);
-    }
-
-    public void ReturnPlayer()
-    {
-        rgbd.velocity = new Vector3(0, 0, 0);
-        transform.position = playerPos;
     }
 }

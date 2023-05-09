@@ -338,8 +338,10 @@ public class LobbyController : MonoBehaviour
 
     public async void DeleteLobby() {
         try {
-            await LobbyService.Instance.DeleteLobbyAsync(joinedLobby.Id);
-            joinedLobby = null;
+            if(joinedLobby != null) {
+                await LobbyService.Instance.DeleteLobbyAsync(joinedLobby.Id);
+                joinedLobby = null;
+            }
         } catch (LobbyServiceException e) {
             Debug.Log(e);
         }

@@ -11,7 +11,7 @@ public class MainMenuUI : MonoBehaviour
 
     private void Awake() {
         playOneButton.onClick.AddListener(() => {
-            LobbyUIController.Instance.StartGameCamera();
+            //LobbyUIController.Instance.StartGameCamera();
         });
     }
 

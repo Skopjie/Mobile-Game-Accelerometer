@@ -44,7 +44,7 @@ public class LobbyUIController : MonoBehaviour
     }
 
     private void Start() {
-        GameStateManager.Instance.OnAllPlayerConnected += StartGameCamera;
+        GameStateManager.Instance.OnAllPlayerConnected += ActiveStartGameAnimation;
     }
 
     public void HideAllCanvas() {
@@ -123,10 +123,7 @@ public class LobbyUIController : MonoBehaviour
         gameCanvasUI.ShowCanvas();
     }
 
-    public void StartGameCamera(object sender, GameStateManager.GameStateEventArgs e) {
-        StartCoroutine(StartAnimation());
-    }
-    public void StartGameCamera() {
+    public void ActiveStartGameAnimation(object sender, GameStateManager.GameStateEventArgs e) {
         StartCoroutine(StartAnimation());
     }
 
@@ -136,7 +133,10 @@ public class LobbyUIController : MonoBehaviour
         DisableCameras();
         gameCamera.Priority = 10;
         yield return new WaitForSeconds(1);
-        //tengo que activarlo para que se invoque evento
+        StartChronometerAnimation();
+    }
+
+    public void StartChronometerAnimation() {
         ShowChronometer();
         OnStartCinematicEnds?.Invoke(this, new LobbyUIHandler { lobby = "" });
     }

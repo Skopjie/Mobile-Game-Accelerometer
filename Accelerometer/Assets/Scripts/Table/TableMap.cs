@@ -34,7 +34,8 @@ public class TableMap : NetworkBehaviour
     }
 
     public void StartRoundGameInvoke() {
-        StartCoroutine(NextRound(GetRandomPatron()));
+        roundGame = NextRound(GetRandomPatron());
+        StartCoroutine(roundGame);
         LobbyController.Instance.DeleteLobby();
     }
 
@@ -44,10 +45,10 @@ public class TableMap : NetworkBehaviour
 
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < columns; j++)
-                InstantiateCasilla(i, j);
+                InstantiateSquare(i, j);
     }
 
-    void InstantiateCasilla(int fila, int columna) {
+    void InstantiateSquare(int fila, int columna) {
         Vector3 squarePosition = new Vector3(transform.position.x + (fila * scaleSquarePrefab.x), -2, transform.position.y + (columna * scaleSquarePrefab.z));
         Transform newSquareTransform = Instantiate(squarePrefab, squarePosition, Quaternion.identity, transform).GetComponent<Transform>();
         newSquareTransform.GetComponent<NetworkObject>().Spawn(true);
@@ -57,10 +58,6 @@ public class TableMap : NetworkBehaviour
 
         allSquares[fila, columna] = newSquare;
         allSquaresEnables.Add(newSquare);
-    }
-
-    public void AddQuareListCount() {
-        Invoke("AddSquareToData", 1);
     }
 
     public void AddSquareToData() {
@@ -82,7 +79,13 @@ public class TableMap : NetworkBehaviour
 
         yield return new WaitForSeconds(timePerRound);
         ReturnMapNormalClientRpc();
-        StartCoroutine(NextRound(GetRandomPatron()));
+        roundGame = NextRound(GetRandomPatron());
+        StartCoroutine(roundGame);
+    }
+
+    PatronCasillasData GetRandomPatron() {
+        int randomPatron = Random.Range(0, patronesData.Count);
+        return patronesData[randomPatron];
     }
 
     public void StopGame() {
@@ -96,30 +99,20 @@ public class TableMap : NetworkBehaviour
         allSquaresEnables.Clear();
     }
 
-    PatronCasillasData GetRandomPatron() {
-        int randomPatron = Random.Range(0, patronesData.Count);
-        return patronesData[randomPatron];
-    }
-
-
     [ClientRpc]
-    public void BuildPatronMapClientRpc(PatronCasillasData patron)
-    {
-        //patron.InitArrayData();
+    public void BuildPatronMapClientRpc(PatronCasillasData patron) {
         SetSquareListType(patron.squareFallArray, TypeSquare.fall);
         SetSquareListType(patron.squareRebotadorArray, TypeSquare.rebotador);
         SetSquareListType(patron.squaresRepellerArray, TypeSquare.repellers);
         SetSquareListType(patron.squaresAttractorArray, TypeSquare.attractor);
     }
 
-    void SetSquareListType(Vector2Int[] squareArray, TypeSquare typeSquare)
-    {
+    void SetSquareListType(Vector2Int[] squareArray, TypeSquare typeSquare) {
         foreach (Vector2Int id in squareArray)
             SetSquareType(id, typeSquare);
     }
 
-    void SetSquareType(Vector2Int idCasilla, TypeSquare typeSquare)
-    {
+    void SetSquareType(Vector2Int idCasilla, TypeSquare typeSquare) {
         SquareController casillaSeleccionada = allSquares[idCasilla.x, idCasilla.y];
         casillaSeleccionada.CallAndChangeTypeSquareAction(typeSquare);
 
@@ -128,10 +121,8 @@ public class TableMap : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void ReturnMapNormalClientRpc()
-    {
-        foreach (SquareController casilla in squaresDisable)
-        {
+    public void ReturnMapNormalClientRpc() {
+        foreach (SquareController casilla in squaresDisable) {
             casilla.ReturnSquareToNormalState();
             allSquaresEnables.Add(casilla);
         }
