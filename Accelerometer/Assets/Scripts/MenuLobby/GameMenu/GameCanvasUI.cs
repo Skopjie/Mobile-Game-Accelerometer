@@ -37,7 +37,12 @@ public class GameCanvasUI : MonoBehaviour
                 HideTimmer();
                 actualTimmerStartRound = timmerStartRound;
                 gameIsStarted = false;
-                GameStateManager.Instance.StartGame();
+                if (GameStateManager.Instance.isInMultiplayer) {
+                    GameStateManager.Instance.StartGame();
+                }
+                else {
+                    GameStateManager.Instance.StartGameSinglePlayer();
+                }
             }
         }
     }

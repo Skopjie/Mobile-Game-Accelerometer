@@ -7,11 +7,18 @@ public class MainMenuUI : MonoBehaviour
 {
     [Header("Botones")]
     [SerializeField] Button playOneButton;
+    [SerializeField] Button multiplayerButton;
 
 
     private void Awake() {
         playOneButton.onClick.AddListener(() => {
-            //LobbyUIController.Instance.StartGameCamera();
+            GameStateManager.Instance.isInMultiplayer = false;
+            GameStateManager.Instance.InitMapSinglePlayer();
+            LobbyUIController.Instance.ActiveStartGameAnimation();
+        });
+        multiplayerButton.onClick.AddListener(() => {
+            GameStateManager.Instance.isInMultiplayer = true;
+            LobbyUIController.Instance.ShowNameOnline();
         });
     }
 

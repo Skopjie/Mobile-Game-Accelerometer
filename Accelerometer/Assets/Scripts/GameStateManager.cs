@@ -32,6 +32,9 @@ public class GameStateManager : NetworkBehaviour {
 
     [Header("Variable")]
     public List<NetworkObject> playersNetwork = new List<NetworkObject>();
+    public bool isInMultiplayer = false;
+    [SerializeField] GameObject tableDefect;
+    [SerializeField] GameObject playerSinglePrefab;
 
 
 
@@ -45,6 +48,16 @@ public class GameStateManager : NetworkBehaviour {
 
     private void Start() {
         instace = this;
+    }
+
+    private void Update() {
+        if (NetworkManager.Singleton.ShutdownInProgress) {
+            LobbyUIController.Instance.ShowMultiplayerOptions();
+            playersNetwork.Clear();
+            TableMap.Instance.DeleteAllDataTable();
+            UnsubscribeAllEvnts();
+            tableDefect.SetActive(true);
+        }
     }
 
     void UnsubscribeAllEvnts() {
@@ -85,6 +98,7 @@ public class GameStateManager : NetworkBehaviour {
     void CheckAllPlayerAreConnected() {
         if (numberPlayer.Value == RelayController.Instance.relayData.numberPlayer) {
             OnAllPlayerConnected?.Invoke(this, new GameStateEventArgs { lobby = "" });
+            tableDefect.SetActive(false);
             SetGameData(0, 2);
         }
     }
@@ -98,7 +112,7 @@ public class GameStateManager : NetworkBehaviour {
         if (actualNumberOfPlayers.Value == 1 || actualNumberOfPlayers.Value == 0) {
             if (IsHost)
                 actualNumberOfPlayers.Value = numberPlayer.Value;
-            GameIsOver();
+            CheckRoundsGameIsOver();
         }
     }
 
@@ -108,13 +122,28 @@ public class GameStateManager : NetworkBehaviour {
             TableMap.Instance.StartRoundGameInvoke();
     }
 
+    public void StartGameSinglePlayer() {
+        OnRoundStart?.Invoke(this, new GameStateEventArgs { lobby = "" });
+        TableMap.Instance.StartRoundGameInvoke();
+    }
+
+    public void InitMapSinglePlayer() {
+        TableMap.Instance.InitTable();
+        tableDefect.SetActive(false);
+        SpawnPlayer();
+    }
+
+    public void SpawnPlayer() {
+        Instantiate(playerSinglePrefab, new Vector3(2.1f, 0.6f, 5.3f), Quaternion.identity, transform).GetComponent<Transform>();
+    }
+
     void InvokeNextRound() {
         OnRoundIsOver?.Invoke(this, new GameStateEventArgs { lobby = "" });
         TableMap.Instance.StopGame();
         LobbyUIController.Instance.StartChronometerAnimation();
     }
 
-    public void GameIsOver() {
+    public void CheckRoundsGameIsOver() {
         if (IsHost)
             actualNumberRounds.Value--;
 
@@ -122,10 +151,15 @@ public class GameStateManager : NetworkBehaviour {
             InvokeNextRound();
         }
         else if (actualNumberRounds.Value <= 0) {
-            LobbyUIController.Instance.ShowMultiplayerOptions();
-            ResetDataGame();
-            ShutDownNetworkObjects();
+            GameIsOver();
         }
+    }
+
+    public void GameIsOver() {
+        ResetDataGame();
+        ShutDownNetworkObjects();
+        LobbyUIController.Instance.ShowMultiplayerOptions();
+        tableDefect.SetActive(true);
     }
 
     public void ResetDataGame() {
@@ -137,11 +171,13 @@ public class GameStateManager : NetworkBehaviour {
     }
 
     public void ShutDownNetworkObjects() {
-        NetworkManager.Singleton.Shutdown();
-
         playersNetwork.Clear();
         TableMap.Instance.DeleteAllDataTable();
-
         UnsubscribeAllEvnts();
+        Invoke("Shut", 1);
+    }
+
+    public void Shut() {
+        NetworkManager.Singleton.Shutdown();
     }
 }

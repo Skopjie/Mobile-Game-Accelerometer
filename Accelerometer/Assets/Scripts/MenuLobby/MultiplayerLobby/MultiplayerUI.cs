@@ -9,6 +9,7 @@ public class MultiplayerUI: MonoBehaviour
     [SerializeField] Button createLobbyButton;
     [SerializeField] Button joinPublicButton;
     [SerializeField] Button joinPrivateButton;
+    [SerializeField] Button backButton;
 
     [Header("Componentes")]
     [SerializeField] CreateLobbyUI createLobbyUI;
@@ -25,6 +26,10 @@ public class MultiplayerUI: MonoBehaviour
 
         joinPrivateButton.onClick.AddListener(() => {
             HideCanvas();
+        });
+
+        backButton.onClick.AddListener(() => {
+            LobbyUIController.Instance.ShowMainMenu();
         });
     }
 

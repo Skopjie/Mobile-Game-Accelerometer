@@ -1,19 +1,10 @@
 using System.Collections;
-using Unity.Netcode;
 using UnityEngine;
 
-public class SquareController : NetworkBehaviour {
+public class SquareController : MonoBehaviour {
     [Header("Datos Importantes")]
-    public NetworkVariable<Vector2> idSquare =
-    new NetworkVariable<Vector2>(new Vector2(0,0),
-        NetworkVariableReadPermission.Everyone,
-        NetworkVariableWritePermission.Owner);
-
-    public NetworkVariable<Vector3> squareInitialPosition =
-    new NetworkVariable<Vector3>(new Vector3(0, 0,0),
-        NetworkVariableReadPermission.Everyone,
-        NetworkVariableWritePermission.Owner);
-
+    [SerializeField] Vector2 idSquare;
+    [SerializeField] Vector3 squareInitialPosition;
     [SerializeField] ISquareActions squareActions;
 
     [SerializeField]float timeToChangeTypeSquare;
@@ -21,6 +12,7 @@ public class SquareController : NetworkBehaviour {
 
     [Header("Componentes")]
     [SerializeField] MeshRenderer meshRender;
+    [SerializeField] SquareNetwork squareNetwork;
     public Rigidbody rgbd;
 
     private void Start()
@@ -30,7 +22,10 @@ public class SquareController : NetworkBehaviour {
 
     void InitComponents()
     {
-        if(meshRender == null)
+        if (squareNetwork == null)
+            squareNetwork = gameObject.GetComponent<SquareNetwork>();
+
+        if (meshRender == null)
             meshRender = gameObject.GetComponent<MeshRenderer>();
 
         if(rgbd == null)
@@ -38,18 +33,40 @@ public class SquareController : NetworkBehaviour {
     }
 
     public Vector2 GetIdSquare() {
-        return idSquare.Value;
+        if (GameStateManager.Instance.isInMultiplayer)
+            return squareNetwork.GetIdSquare();
+        else
+            return idSquare;
+    }
+    public Vector3 GetInitialPositionSquare() {
+        if (GameStateManager.Instance.isInMultiplayer) {
+            return squareNetwork.GetInitialPositionSquare();
+        }
+        else
+            return squareInitialPosition;
     }
     public void SetPositionSquare(Vector3 newSquareInitialPosition) {
-        squareInitialPosition.Value = newSquareInitialPosition;
+        if (GameStateManager.Instance.isInMultiplayer)
+            squareNetwork.SetPositionSquare(newSquareInitialPosition);
+        else
+            squareInitialPosition = newSquareInitialPosition;
     }
-    public void InitDataSquare(Vector2 newId, Vector3 newSquareInitialPosition)
-    {
-        idSquare.Value = newId;
-        squareInitialPosition.Value = newSquareInitialPosition;
+    public void SetIdSquare(Vector2 newId) {
+        if (GameStateManager.Instance.isInMultiplayer)
+            squareNetwork.SetIdSquare(newId);
+        else
+            idSquare = newId;
     }
-    public void InitIdSquare(Vector2 newId) {
-        idSquare.Value = newId;
+    public void InitDataSquare(Vector2 newId, Vector3 newSquareInitialPosition) {
+        if (GameStateManager.Instance.isInMultiplayer) {
+            squareInitialPosition = newSquareInitialPosition;
+            idSquare = newId;
+            squareNetwork.InitDataSquare(newId, newSquareInitialPosition);
+        }
+        else {
+            SetPositionSquare(newSquareInitialPosition);
+            SetIdSquare(newId);
+        }
     }
 
 

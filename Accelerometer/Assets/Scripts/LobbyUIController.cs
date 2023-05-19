@@ -65,6 +65,16 @@ public class LobbyUIController : MonoBehaviour
         playerListCamera.Priority = 0;
     }
 
+    public void ShowMainMenu() {
+        HideAllCanvas();
+        mainMenuUI.ShowCanvas();
+    }
+
+    public void ShowNameOnline() {
+        HideAllCanvas();
+        connectMultiplayerUI.ShowCanvas();
+    }
+
     public void ShowMultiplayerOptions() {
         //Oculta anterior canvas
         connectMultiplayerUI.HideCanvas();
@@ -124,6 +134,9 @@ public class LobbyUIController : MonoBehaviour
     }
 
     public void ActiveStartGameAnimation(object sender, GameStateManager.GameStateEventArgs e) {
+        StartCoroutine(StartAnimation());
+    }
+    public void ActiveStartGameAnimation() {
         StartCoroutine(StartAnimation());
     }
 

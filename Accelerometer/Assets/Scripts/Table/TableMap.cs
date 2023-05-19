@@ -13,6 +13,7 @@ public class TableMap : NetworkBehaviour
 
     [Header("Componentes")]
     [SerializeField] GameObject squarePrefab;
+    [SerializeField] GameObject squareSinglePlayerPrefab;
     [SerializeField] List<PatronCasillasData> patronesData;
 
     [Header("Datos Tablero")]
@@ -50,8 +51,15 @@ public class TableMap : NetworkBehaviour
 
     void InstantiateSquare(int fila, int columna) {
         Vector3 squarePosition = new Vector3(transform.position.x + (fila * scaleSquarePrefab.x), -2, transform.position.y + (columna * scaleSquarePrefab.z));
-        Transform newSquareTransform = Instantiate(squarePrefab, squarePosition, Quaternion.identity, transform).GetComponent<Transform>();
-        newSquareTransform.GetComponent<NetworkObject>().Spawn(true);
+        Transform newSquareTransform;
+        if (GameStateManager.Instance.isInMultiplayer) {
+            newSquareTransform = Instantiate(squarePrefab, squarePosition, Quaternion.identity, transform).GetComponent<Transform>();
+            newSquareTransform.GetComponent<NetworkObject>().Spawn(true);
+        }
+        else {
+            newSquareTransform = Instantiate(squareSinglePlayerPrefab, squarePosition, Quaternion.identity, transform).GetComponent<Transform>();
+            newSquareTransform = newSquareTransform.transform;
+        }
         newSquareTransform.parent = transform;
         SquareController newSquare = newSquareTransform.GetComponent<SquareController>();
         newSquare.InitDataSquare(new Vector2(fila, columna), squarePosition);
@@ -75,10 +83,18 @@ public class TableMap : NetworkBehaviour
     {
         Debug.Log(patronData.namePatron);
         yield return new WaitForSeconds(timeBtwRound);
-        BuildPatronMapClientRpc(patronData);
+
+        if (GameStateManager.Instance.isInMultiplayer)
+            BuildPatronMapClientRpc(patronData);
+        else
+            BuildPatronMap(patronData);
 
         yield return new WaitForSeconds(timePerRound);
-        ReturnMapNormalClientRpc();
+        if (GameStateManager.Instance.isInMultiplayer)
+            ReturnMapNormalClientRpc();
+        else
+            ReturnMapNormal();
+
         roundGame = NextRound(GetRandomPatron());
         StartCoroutine(roundGame);
     }
@@ -90,17 +106,30 @@ public class TableMap : NetworkBehaviour
 
     public void StopGame() {
         StopCoroutine(roundGame);
-        ReturnMapNormalClientRpc();
+        if (GameStateManager.Instance.isInMultiplayer)
+            ReturnMapNormalClientRpc();
+        else 
+            ReturnMapNormal();
     }
 
     public void DeleteAllDataTable() {
         StopCoroutine(roundGame);
         squaresDisable.Clear();
         allSquaresEnables.Clear();
+        foreach (SquareController square in allSquares) {
+            square.GetComponent<NetworkObject>().Despawn();
+            Destroy(square.gameObject);
+        }
     }
 
     [ClientRpc]
     public void BuildPatronMapClientRpc(PatronCasillasData patron) {
+        SetSquareListType(patron.squareFallArray, TypeSquare.fall);
+        SetSquareListType(patron.squareRebotadorArray, TypeSquare.rebotador);
+        SetSquareListType(patron.squaresRepellerArray, TypeSquare.repellers);
+        SetSquareListType(patron.squaresAttractorArray, TypeSquare.attractor);
+    }
+    public void BuildPatronMap(PatronCasillasData patron) {
         SetSquareListType(patron.squareFallArray, TypeSquare.fall);
         SetSquareListType(patron.squareRebotadorArray, TypeSquare.rebotador);
         SetSquareListType(patron.squaresRepellerArray, TypeSquare.repellers);
@@ -122,6 +151,13 @@ public class TableMap : NetworkBehaviour
 
     [ClientRpc]
     public void ReturnMapNormalClientRpc() {
+        foreach (SquareController casilla in squaresDisable) {
+            casilla.ReturnSquareToNormalState();
+            allSquaresEnables.Add(casilla);
+        }
+        squaresDisable.Clear();
+    }
+    public void ReturnMapNormal() {
         foreach (SquareController casilla in squaresDisable) {
             casilla.ReturnSquareToNormalState();
             allSquaresEnables.Add(casilla);

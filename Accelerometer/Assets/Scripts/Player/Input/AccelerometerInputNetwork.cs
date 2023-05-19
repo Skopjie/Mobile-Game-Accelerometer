@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class AccelerometerInput : MonoBehaviour
+public class AccelerometerInputNetwork : NetworkBehaviour
 {
     [Header("Componentes")]
     [SerializeField] Rigidbody rgbd;
+    [SerializeField] PlayerDataNetwork playerData;
     [SerializeField] MeshRenderer meshRender;
 
     [Header("Variables")]
@@ -20,6 +20,7 @@ public class AccelerometerInput : MonoBehaviour
     }
 
     void FixedUpdate() {
+        if (!IsOwner) return;
         GetAccelerometer();
     }
 
@@ -29,6 +30,9 @@ public class AccelerometerInput : MonoBehaviour
 
         if (meshRender == null)
             meshRender = GetComponent<MeshRenderer>();
+
+        if (playerData == null)
+            playerData = GetComponent<PlayerDataNetwork>();
     }
 
     void ActiveMovement(object sender, GameStateManager.GameStateEventArgs e) {
@@ -40,9 +44,12 @@ public class AccelerometerInput : MonoBehaviour
     }
 
     void SetPosition(object sender, GameStateManager.GameStateEventArgs e) {
-        rgbd.velocity = new Vector3(0, 0, 0);
-        transform.position = new Vector3(2.1f, 0.6f, 5.3f);
-        DesactiveMovement();
+        rgbd = GetComponent<Rigidbody>();
+        if (IsOwner) {
+            rgbd.velocity = new Vector3(0, 0, 0);
+            transform.position = playerData.GetPositionSpawn();
+            DesactiveMovement();
+        }
     }
 
     void GetAccelerometer() {
